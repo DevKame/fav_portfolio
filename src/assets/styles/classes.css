@@ -3,3 +3,6 @@
 .bg-prim {
     background-color: var(--prim);
 }
+.bg-tert {
+    background-color: var(--tert);
+}
