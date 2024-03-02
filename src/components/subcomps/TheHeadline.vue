@@ -5,70 +5,62 @@
         </h1>
         <h1 class="developer mt-2">DEVELOPER</h1>
     </section>
+
+    
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 
-let jsDONE = ref<boolean>(false);
-let vueDONE = ref<boolean>(false);
-
-
+// REFERENCE TO THE CHANGING <h1> HEADLINE
 const varHL = ref();
-const WORD_JS = ref<string>("JAVASCRIPT");
-const WORD_VUE = ref<string>("VUE.JS");
-const WORD_WEB = ref<string>("WEB");
-interface JS {
-    [j: string]: boolean;
-}
-
+// ENSURES A WAITING BETWEEN EXPANDING/COLLAPSING OF HEADLINES
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-async function animateHL() {
-    if(!jsDONE.value)
+/** ANIMATES THE UPPER HEADLINE WORD BY WORD, USES THE PROVIDED STRING
+ *  TO KNOW WHAT WORD TO DISPLAY, WHENEVER A NEW WORD GETS RENDERED, THE COLOR
+ *  GRADIENT CHANGES FITTING TO ITS LOGOS COLORS
+ * @param {string} word     => "JAVASCRIPT" | "VUE.JS" | "WEB */
+async function wordAnimation(word: string) {
+    let gradientClass = "";
+    switch(word)
     {
-        varHL.value.classList.add("javascript");
-        for(let i = 0; i < WORD_JS.value.length ; i++)
+        case "JAVASCRIPT":
+            gradientClass = "javascript";
+            break;
+        case "VUE.JS":
+            gradientClass = "vue";
+            break;
+        case "WEB":
+            gradientClass = "headline-gradient";
+            break;
+    }
+    varHL.value.classList.add(gradientClass);
+    for(let i = 0; i < word.length ; i++)
+    {
+        await wait(100);
+        varHL.value.innerText += word[i];
+    }
+    if(word !== "WEB")
+    {
+        for(let i = 0; i < word.length ; i++)
         {
             await wait(100);
-            varHL.value.innerText += WORD_JS.value[i];
+            varHL.value.innerText = word.slice(0, word.length - 1 - i);
         }
-        for(let i = 0; i < WORD_JS.value.length ; i++)
-        {
-            await wait(100);
-            varHL.value.innerText = WORD_JS.value.slice(0, WORD_JS.value.length - 1 - i);
-        }
-        jsDONE.value = true;
-        varHL.value.classList.remove("javascript");
-
+        varHL.value.classList.remove(gradientClass);
     }
-    if(!vueDONE.value)
-    {
-        varHL.value.classList.add("vue");
-        for(let i = 0; i < WORD_VUE.value.length ; i++)
-        {
-            await wait(150);
-            varHL.value.innerText += WORD_VUE.value[i];
-        }
-        for(let i = 0; i < WORD_VUE.value.length ; i++)
-        {
-            await wait(150);
-            varHL.value.innerText = WORD_VUE.value.slice(0, WORD_VUE.value.length - 1 - i);
-        }
-        jsDONE.value = true;
-        varHL.value.classList.remove("vue");
-    }
-        varHL.value.classList.add("headline-gradient");
-        for(let i = 0; i < WORD_WEB.value.length ; i++)
-        {
-            await wait(200);
-            varHL.value.innerText += WORD_WEB.value[i];
-        }
+    else {
         varHL.value.classList.add("done");
+    }
 }
-
+// INVOKES THE ANIMATING OF THE UPPER <h1> HEADLINE
+async function animateHL() {
+        await wordAnimation("JAVASCRIPT");
+        await wordAnimation("VUE.JS");
+        await wordAnimation("WEB");
+}
+// STARTS THE ANIMATION OF THE UPPER <h1> HEADLINE AS SOON AS COMPONENT´S DOM IS MOUNTED
 onMounted(() => {
-    console.log(varHL.value);
     animateHL();
 })
 </script>
@@ -115,11 +107,8 @@ h1 {
     filter: drop-shadow(0 0 4px black);
 }
 .headline-wrapper {
+    width: 800px;
     height: 500px;
-}
-.headline-wrapper h1 {
-    font-size: 100px;
-    color: #c7c7c7;
 }
 @keyframes pointer-ani {
     from {
@@ -131,6 +120,9 @@ h1 {
 }
 
 @media screen and (min-width: 1200px) {
+    .headline-wrapper h1 {
+        font-size: 100px;
+    }
     .headline-wrapper {
         margin-left: 150px;
     }
