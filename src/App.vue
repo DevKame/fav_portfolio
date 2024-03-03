@@ -2,7 +2,7 @@
   <the-bar></the-bar>
   <the-header></the-header>
   <the-about></the-about>
-  <section class="space"></section>
+  <!-- <section class="space"></section> -->
 </template>
 
 <script lang="ts" setup>
@@ -22,8 +22,10 @@ const scrollProgress = computed(() => {
   const max = body.getBoundingClientRect().height - innerHeight;
   return (sval.value / max) * 100;
 });
+const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 //PROVIDING THE SCROLL PROGRESS FOR "FADING IN" OF OTHER COMPS
 provide("progressvalue", scrollProgress);
+provide("wait", wait);
 // SET A SCROLL LISTENER TO THE WINDOW ELEMENT
 onMounted(() => {
   window.addEventListener("scroll", e => {

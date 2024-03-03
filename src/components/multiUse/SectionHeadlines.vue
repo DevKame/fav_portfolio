@@ -26,7 +26,6 @@ const props = defineProps([
     @media screen and (min-width: 1400px) {
         h1.section-headlines {
             font-size: 250px;
-            /* transform: translateY(30%); */
             z-index: -1;
         }
     }
