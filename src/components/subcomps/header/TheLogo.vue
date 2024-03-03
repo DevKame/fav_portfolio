@@ -126,7 +126,6 @@
 <style scoped>
 #dev-kamedin-logo {
     margin: 0 auto;
-    transform: scale(1.4);
 }
 path:not(.logo-paths) {
     filter: drop-shadow(0 0 10px var(--tert));
@@ -137,5 +136,31 @@ path {
 }
 .logo-paths {
     fill: none;
+}
+#dev-kamedin-logo {
+    margin-top: 75px;
+    transform: scale(.8);
+}
+@media screen and (min-width: 576px) {
+    #dev-kamedin-logo {
+        margin-top: 50px;
+        transform: scale(1);
+    }
+}
+@media screen and (min-width: 992px) {
+    #dev-kamedin-logo {
+        margin-top: 0;
+        transform: scale(.8);
+    }
+}
+@media screen and (min-width: 1200px) {
+    #dev-kamedin-logo {
+        transform: scale(1);
+    }
+}
+@media screen and (min-width: 1400px) {
+    #dev-kamedin-logo {
+        transform: scale(1.4);
+    }
 }
 </style>

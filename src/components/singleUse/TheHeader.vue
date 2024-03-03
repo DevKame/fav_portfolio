@@ -1,5 +1,5 @@
 <template>
-    <header class="d-flex justify-content-start align-items-center">
+    <header class="d-flex flex-column flex-lg-row justify-content-start align-items-start align-items-lg-center">
         <the-headline></the-headline>
         <the-logo></the-logo>
     </header>

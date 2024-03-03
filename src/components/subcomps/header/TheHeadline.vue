@@ -1,9 +1,9 @@
 <template>
     <section class="headline-wrapper px-1 d-flex flex-column justify-content-center align-items-start">
-        <h1 class="variable-headline mb-2 position-relative" ref="varHL">
+        <h1 class="variable-headline mb-xl-1 mb-xxl-2 position-relative" ref="varHL">
             <div class="pointer position-absolute"></div>
         </h1>
-        <h1 class="developer mt-2">DEVELOPER</h1>
+        <h1 class="developer mb-xl-1 mt-2">DEVELOPER</h1>
     </section>
 
     
@@ -99,20 +99,14 @@ onMounted(() => {
     height: 99%;
     background-color: var(--tert);
 }
-.variable-headline {
-    height: 125px;
-}
 h1 {
     font-family: "Unbounded Black 900";
     filter: drop-shadow(0 0 4px black);
     pointer-events: none;
+    line-height: 1;
 }
 h1::selection {
     all: unset;
-}
-.headline-wrapper {
-    width: 800px;
-    height: 500px;
 }
 @keyframes pointer-ani {
     from {
@@ -123,12 +117,73 @@ h1::selection {
     }
 }
 
+.headline-wrapper h1 {
+    font-size: 10vmin;
+}
+.headline-wrapper {
+    margin-top: 150px;
+    width: 100%;
+    height: 20vmin;
+    margin-left: 20px;
+}
+.variable-headline {
+    height: 150px;
+}
+@media screen and (min-width: 576px) {
+    .headline-wrapper h1 {
+        font-size: clamp(50px, 20vmin, 60px);
+    }
+    .headline-wrapper {
+        margin-top: 100px;
+        width: 100%;
+        height: 200px;
+        margin-left: 20px;
+    }
+    .variable-headline {
+        height: clamp(50px, 20vmin, 60px);
+    }
+}
+@media screen and (min-width: 768px) {
+    .headline-wrapper h1 {
+        font-size: 75px;
+    }
+    .headline-wrapper {
+        margin-left: 50px;
+    }
+    .variable-headline {
+        height: 75px;
+    }
+}
+@media screen and (min-width: 992px) {
+    .headline-wrapper {
+        margin-top: 0;
+        width: 600px;
+        height: 500px;
+        margin-left: 50px;
+    }
+}
 @media screen and (min-width: 1200px) {
     .headline-wrapper h1 {
         font-size: 100px;
     }
     .headline-wrapper {
+        width: 800px;
+        height: 500px;
+        margin-left: 75px;
+    }
+    .variable-headline {
+        height: 100px;
+    }
+}
+@media screen and (min-width: 1400px) {
+    .headline-wrapper h1 {
+        font-size: 100px;
+    }
+    .headline-wrapper {
         margin-left: 150px;
+    }
+    .variable-headline {
+        height: 125px;
     }
 }
 </style>
