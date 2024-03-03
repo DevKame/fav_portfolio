@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, inject, watch } from 'vue';
+import { ref, onMounted, inject, watch, ComputedRef } from 'vue';
 
 import MyKeywords from '../subcomps/about/MyKeywords.vue';
 
@@ -93,7 +93,7 @@ watch(progress, () => {
     // if(sectiontop <= 0) sectionVisible.value = true;
 });
 
-const wait = inject("wait");
+const wait = inject("wait")!;
 
 async function openTextbox() {
     await wait(50);

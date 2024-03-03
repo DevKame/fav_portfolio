@@ -5,14 +5,14 @@
 </template>
 
 <script lang="ts" setup>
-import {inject, watch, ref} from "vue";
+import {inject, watch, ref, ComputedRef} from "vue";
 // import { ProgressKey } from "@/types/keys";
 
 // REFERENCE TO THE <div> ELEMENT DISPLAYING THE CURRRENT SCROLLPROGRESS IN %
 const bar = ref<HTMLDivElement>();
 // INJECTED SCROLL PROGRESS OF THE DOCUMENT IN PERCENT
 // let progress = inject(ProgressKey);
-let progress = inject("progressvalue")!;
+let progress = inject<ComputedRef<number>>("progressvalue")!;
 
 // CHANGE div.bar WITH WHEN SCROLLPROGRESS CHANGES
 watch(progress, val => {
