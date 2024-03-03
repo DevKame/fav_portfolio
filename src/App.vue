@@ -1,17 +1,20 @@
 <template>
   <the-bar></the-bar>
   <the-header></the-header>
-  <section></section>
+  <the-about></the-about>
+  <section class="space"></section>
 </template>
 
 <script lang="ts" setup>
 import TheHeader from "./components/singleUse/TheHeader.vue";
 import TheBar from "./components/singleUse/TheBar.vue";
+import TheAbout from "./components/singleUse/TheAbout.vue";
 
-import { onMounted, ref, watch, computed, provide } from "vue";
+import { onMounted, ref, computed, provide } from "vue";
+// import { ProgressKey } from "./types/keys";
 
 // REFERENCE TO THE <body> ELEMENT
-const body: HTMLBodyElement = document.querySelector("body");
+const body: HTMLBodyElement = document.querySelector("body")!;
 // REFERENCE TO THE CURRENT scrollY - VALUE
 const sval = ref<number>(scrollY);
 // COMPUTES THE SCROLLPROGRESS OF THE DOCUMENT IN PERCENT
@@ -20,17 +23,17 @@ const scrollProgress = computed(() => {
   return (sval.value / max) * 100;
 });
 //PROVIDING THE SCROLL PROGRESS FOR "FADING IN" OF OTHER COMPS
-provide("scrollprogress", scrollProgress);
+provide("progressvalue", scrollProgress);
 // SET A SCROLL LISTENER TO THE WINDOW ELEMENT
 onMounted(() => {
   window.addEventListener("scroll", e => {
     sval.value = scrollY;
   });
-})
+});
 </script>
 
 <style>
-section {
+section.space {
   height: 400vh;
 }
 /* section {

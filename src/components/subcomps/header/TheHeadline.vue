@@ -105,6 +105,10 @@ onMounted(() => {
 h1 {
     font-family: "Unbounded Black 900";
     filter: drop-shadow(0 0 4px black);
+    pointer-events: none;
+}
+h1::selection {
+    all: unset;
 }
 .headline-wrapper {
     width: 800px;

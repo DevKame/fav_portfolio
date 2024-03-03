@@ -6,8 +6,8 @@
 </template>
 
 <script lang="ts" setup>
-import TheHeadline from '../subcomps/TheHeadline.vue';
-import TheLogo from '../subcomps/TheLogo.vue';
+import TheHeadline from '../subcomps/header/TheHeadline.vue';
+import TheLogo from '../subcomps/header/TheLogo.vue';
 </script>
 
 

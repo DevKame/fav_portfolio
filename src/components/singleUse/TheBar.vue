@@ -6,17 +6,21 @@
 
 <script lang="ts" setup>
 import {inject, watch, ref} from "vue";
+// import { ProgressKey } from "@/types/keys";
 
 // REFERENCE TO THE <div> ELEMENT DISPLAYING THE CURRRENT SCROLLPROGRESS IN %
 const bar = ref<HTMLDivElement>();
 // INJECTED SCROLL PROGRESS OF THE DOCUMENT IN PERCENT
-let progress = inject("scrollprogress");
+// let progress = inject(ProgressKey);
+let progress = inject("progressvalue")!;
+
 // CHANGE div.bar WITH WHEN SCROLLPROGRESS CHANGES
 watch(progress, val => {
-    let percent = progress.value;
+    let percent = val;
     if(percent > 100) percent = 100;
-    bar.value.style.width = val + "%";
-})
+    // console.log("percent:", percent);
+    bar.value!.style.width = percent + "%";
+});
 </script>
 
 <style scoped>

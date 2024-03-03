@@ -6,3 +6,10 @@
 .bg-tert {
     background-color: var(--tert);
 }
+
+
+
+
+.accent-text {
+    color: var(--tert);
+}

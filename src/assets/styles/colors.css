@@ -2,6 +2,8 @@
 
 :root {
     --prim: #152145;
+    --prim-dark: #111b3a;
+    --prim-weak: #1b2647;
     --sec: #050b1d;
     --tert: #c28513;
 }
