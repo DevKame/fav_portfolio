@@ -1,5 +1,5 @@
 <template>
-    <div class="my-keywords position-relative d-flex justify-content-end align-items-center" ref="keyword">
+    <div @scroll="showScroll" class="my-keywords position-relative d-flex justify-content-end align-items-center" ref="keyword">
         <div class="keyword-aside bg-tert position-absolute"></div>
         <div class="keyword-content d-flex jusity-content-start align-items-center position-relative">
             <fa-icon :icon="icon" size="lg"></fa-icon>
@@ -66,6 +66,11 @@ async function flyKeyword() {
         }
     ).finished;
 
+}
+
+function showScroll(e: Event): void {
+    console.log(e.target);
+    console.log(e.currentTarget);
 }
 </script>
 

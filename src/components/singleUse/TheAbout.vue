@@ -199,10 +199,9 @@ async function openTextbox() {
 .text-box p.show,
 .text-box li.show {
     transform: translateX(0) scaleX(1);
-    /* opacity: 1; */
 }
 .flex-half {
-    border: 1px solid blue;
+    /* border: 1px solid blue; */
     width: 100%;
     min-height: 670px;
 }

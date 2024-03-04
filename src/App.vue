@@ -29,6 +29,10 @@ provide("wait", wait);
 // SET A SCROLL LISTENER TO THE WINDOW ELEMENT
 onMounted(() => {
   window.addEventListener("scroll", e => {
+    e.stopPropagation();
+    console.clear();
+    console.log(e.target);
+    console.log(e.currentTarget);
     sval.value = scrollY;
   });
 });
