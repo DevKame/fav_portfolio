@@ -21,12 +21,30 @@ const props = defineProps([
     h1.section-headlines::selection {
         all: unset;
     }
+    h1.section-headlines {
+        font-size: 15vmin;
+        z-index: -1;
+    }
 
 
+    @media screen and (min-width: 576px) {
+        h1.section-headlines {
+            font-size: 100px;
+        }
+    }
+    @media screen and (min-width: 768px) {
+        h1.section-headlines {
+            font-size: 150px;
+        }
+    }
+    @media screen and (min-width: 992px) {
+        h1.section-headlines {
+            font-size: 200px;
+        }
+    }
     @media screen and (min-width: 1400px) {
         h1.section-headlines {
             font-size: 250px;
-            z-index: -1;
         }
     }
 </style>

@@ -1,61 +1,8 @@
-<template>
-    <section class="about px-5 d-flex flex-wrap justify-content-around align-items-center" ref="aboutSection">
-        <section-headline headline="ABOUT"></section-headline>
-        <div class="flex-half w-50 d-flex flex-column justify-content-start align-items-center">
-            <div class="text-box d-flex justify-content-end align-items-center position-relative" ref="aboutTextbox">
-                <div class="text-box-aside bg-tert position-absolute"></div>
-                <div class="text-box-closer position-absolute"></div>
-                <div class="text-box-content p-3 position-relative d-flex flex-column justify-content-around align-items-end">
-                    <p :class="{show: sectionVisible}">
-                        <span v-for="(c, index) in about1" :key="index">{{ c }}</span>
-                    </p>
-                    <p :class="{show: sectionVisible}">
-                        <span v-for="(c, index) in about2" :key="index">{{ c }}</span>
-                    </p>
-                    <p :class="{show: sectionVisible}">
-                        <span v-for="(c, index) in about3" :key="index">{{ c }}</span>
-                    </p>
-                    <ul>
-                        <li :class="{show: sectionVisible}">
-                            <span v-for="(c, index) in li1" :key="index">{{ c }}</span>
-                        </li>
-                        <li :class="{show: sectionVisible}">
-                            <span v-for="(c, index) in li2" :key="index">{{ c }}</span>
-                        </li>
-                        <li :class="{show: sectionVisible}">
-                            <span v-for="(c, index) in li3" :key="index">{{ c }}</span>
-                        </li>
-                        <li :class="{show: sectionVisible}">
-                            <span v-for="(c, index) in li4" :key="index">{{ c }}</span>
-                        </li>
-                    </ul>
-                    <p :class="{show: sectionVisible}">
-                        <span v-for="(c, index) in about5" :key="index">{{ c }}</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="flex-half w-50 d-flex flex-column justify-content-start align-items-center">
-            <div class="image-info-wrapper d-flex flex-column justify-content-start align-items-center">
-                <div class="image-wrapper rounded-circle d-flex justify-content-center align-items-center">
-                    <div class="image rounded-circle"></div>
-                </div>
-                <div class="keyword-wrapper overflow-hidden w-100 d-flex flex-column justify-content-start align-items-center">
-                    <my-keywords :make-visible="sectionVisible" :delay="400" icon="fa-solid fa-user" text='Eldin Trumic'></my-keywords>
-                    <my-keywords :make-visible="sectionVisible" :delay="500" icon="fa-solid fa-location-dot" text='Germany'></my-keywords>
-                    <my-keywords :make-visible="sectionVisible" :delay="600" icon="fa-solid fa-briefcase" text='Frontend - Dev'></my-keywords>
-                    <my-keywords :make-visible="sectionVisible" :delay="700" icon="fa-brands fa-github" text='GitHub' :is-link="true" link-to="https://github.com/DevKame"></my-keywords>
-                    <my-keywords :make-visible="sectionVisible" :delay="800" icon="fa-solid fa-at" text='website@kamed.in' :is-link="true" link-to="mailto:website@kamed.in"></my-keywords>
-                </div>
-            </div>
 
-
-        </div>
-    </section>
-</template>
 
 <script lang="ts" setup>
-import { ref, onMounted, inject, watch, ComputedRef } from 'vue';
+
+import { ref, onMounted, inject, watch } from 'vue';
 
 import MyKeywords from '../subcomps/about/MyKeywords.vue';
 
@@ -93,7 +40,7 @@ watch(progress, () => {
     // if(sectiontop <= 0) sectionVisible.value = true;
 });
 
-const wait = inject("wait")!;
+const wait = inject<(ms: number) => Promise<any>>("wait")!;
 
 async function openTextbox() {
     await wait(50);
@@ -108,6 +55,61 @@ async function openTextbox() {
 
 
 </script>
+<template>
+    <section class="about px-4 px-xl-5 d-flex flex-wrap justify-content-around align-items-center" ref="aboutSection">
+        <section-headline headline="ABOUT"></section-headline>
+        <div class="flex-half px-2 px-sm-0 d-flex flex-column justify-content-start align-items-center">
+            <div class="text-box d-flex justify-content-end align-items-center position-relative" ref="aboutTextbox">
+                <div class="text-box-aside bg-tert position-absolute"></div>
+                <div class="text-box-closer position-absolute"></div>
+                <div class="text-box-content p-3 position-relative d-flex flex-column justify-content-around align-items-end">
+                    <p :class="{show: sectionVisible}">
+                        <span v-for="(c, index) in about1" :key="index">{{ c }}</span>
+                    </p>
+                    <p :class="{show: sectionVisible}">
+                        <span v-for="(c, index) in about2" :key="index">{{ c }}</span>
+                    </p>
+                    <p :class="{show: sectionVisible}">
+                        <span v-for="(c, index) in about3" :key="index">{{ c }}</span>
+                    </p>
+                    <ul>
+                        <li :class="{show: sectionVisible}">
+                            <span v-for="(c, index) in li1" :key="index">{{ c }}</span>
+                        </li>
+                        <li :class="{show: sectionVisible}">
+                            <span v-for="(c, index) in li2" :key="index">{{ c }}</span>
+                        </li>
+                        <li :class="{show: sectionVisible}">
+                            <span v-for="(c, index) in li3" :key="index">{{ c }}</span>
+                        </li>
+                        <li :class="{show: sectionVisible}">
+                            <span v-for="(c, index) in li4" :key="index">{{ c }}</span>
+                        </li>
+                    </ul>
+                    <p :class="{show: sectionVisible}">
+                        <span v-for="(c, index) in about5" :key="index">{{ c }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="flex-half d-flex flex-column justify-content-start align-items-center align-items-xl-end align-items-xxl-center">
+            <div class="image-info-wrapper d-flex flex-column justify-content-start align-items-center">
+                <div class="image-wrapper rounded-circle d-flex justify-content-center align-items-center">
+                    <div class="image rounded-circle"></div>
+                </div>
+                <div class="keyword-wrapper overflow-hidden w-100 d-flex flex-column justify-content-start align-items-center">
+                    <my-keywords :make-visible="sectionVisible" :delay="400" icon="fa-solid fa-user" text='Eldin Trumic'></my-keywords>
+                    <my-keywords :make-visible="sectionVisible" :delay="500" icon="fa-solid fa-location-dot" text='Germany'></my-keywords>
+                    <my-keywords :make-visible="sectionVisible" :delay="600" icon="fa-solid fa-briefcase" text='Frontend - Dev'></my-keywords>
+                    <my-keywords :make-visible="sectionVisible" :delay="700" icon="fa-brands fa-github" text='GitHub' :is-link="true" link-to="https://github.com/DevKame"></my-keywords>
+                    <my-keywords :make-visible="sectionVisible" :delay="800" icon="fa-solid fa-at" text='website@kamed.in' :is-link="true" link-to="mailto:website@kamed.in"></my-keywords>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+</template>
 
 <style scoped>
 .image {
@@ -145,43 +147,16 @@ async function openTextbox() {
     height: calc(100% - 4px);
     border-radius: inherit;
 }
-.text-box {
-    font-family: "Ubuntu Med 500";
-    color: #c7c7c7;
-    border-radius: 10px;
-    box-shadow: 0 0 0 3px black,
-                0 0 0 6px #c7c7c7;
-    overflow: hidden;
-    transition: all .3s ease;
-}
-.text-box {
-    margin-top: 200px;
-    width: 20px;
-    height: 2px;
-    transform: translate(-300px, 230px);
-}
-.text-box.first-open {
-    width: 20px;
-    height: 460px;
-    transform: translate(-300px, 0);
-}
-.text-box.second-open {
-    width: 600px;
-    height: 460px;
-    transform: translate(0, 0);
-}
 .text-box.last-open {
     box-shadow: 0 0 0 3px black,
                 0 0 0 6px #c7c7c7,
-                55px 55px 5px 15px #3F466F;
+                25px 25px 5px 15px #3F466F;
 }
 .text-box p,
 .text-box li {
     width: 100%;
     transform: translateX(-45%) scaleX(0);
-    /* transition: transform .4s ease-in opacity .2s ease-in; */
     transition: transform .4s ease-in;
-    /* opacity: 0; */
 }
 .text-box p:first-child {
     transition-delay: .1s;
@@ -226,11 +201,101 @@ async function openTextbox() {
     transform: translateX(0) scaleX(1);
     /* opacity: 1; */
 }
-/* .flex-half {
+.flex-half {
     border: 1px solid blue;
-} */
+    width: 100%;
+    min-height: 670px;
+}
+.text-box {
+    font-family: "Ubuntu Med 500";
+    color: #c7c7c7;
+    border-radius: 10px;
+    box-shadow: 0 0 0 3px black,
+                0 0 0 6px #c7c7c7;
+    overflow: hidden;
+    width: 20px;
+    height: 2px;
+    transform: translate(-50%, 580px);
+    transition: all .3s ease;
+        margin-top: 50px;
+}
+.text-box.first-open {
+    width: 20px;
+    height: auto;
+    transform: translate(-50%, 0);
+}
+.text-box.second-open {
+    width: 100%;
+    height: auto;
+    transform: translate(0, 0);
+}
+.text-box.last-open {
+    box-shadow: 0 0 0 3px black,
+                0 0 0 6px #c7c7c7;
+}
+.image-info-wrapper {
+    width: 300px;
+    margin-top: 100px;
+}
 
+@media screen and (min-width: 576px) {
+    .flex-half {
+        width: 100%;
+        min-height: 670px;
+    }
+    .text-box {
+        transform: translate(-215px, 300px);
+        margin-top: 50px;
+    }
+    .text-box.first-open {
+        width: 20px;
+        height: 460px;
+        transform: translate(-215px, 0);
+    }
+    .text-box.second-open {
+        width: 432px;
+        height: 600px;
+        transform: translate(0, 0);
+    }
+    .image-info-wrapper {
+        width: 400px;
+        margin-top: 100px;
+    }
+}
+@media screen and (min-width: 992px) {
+    .text-box.first-open {
+        width: 20px;
+        height: 460px;
+        transform: translate(-300px, 0);
+    }
+    .text-box.last-open {
+        box-shadow: 0 0 0 3px black,
+                    0 0 0 6px #c7c7c7,
+                    55px 55px 5px 15px #3F466F;
+    }
+    .text-box {
+        transform: translate(-300px, 230px);
+        margin-top: 100px;
+    }
+    .text-box.second-open {
+        width: 600px;
+        height: 460px;
+        transform: translate(0, 0);
+    }
+}
 @media screen and (min-width: 1200px) {
+    .image-info-wrapper {
+        width: 300px;
+        margin-top: 200px;
+    }
+    .image {
+        background-size: 120%;
+    }
+    .flex-half {
+        width: 50%;
+    }
+}
+@media screen and (min-width: 1400px) {
     .image-info-wrapper {
         width: 400px;
     }

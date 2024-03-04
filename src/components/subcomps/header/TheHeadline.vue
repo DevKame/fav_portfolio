@@ -122,7 +122,7 @@ h1::selection {
 }
 .headline-wrapper {
     margin-top: 150px;
-    width: 100%;
+    width: 80%;
     height: 20vmin;
     margin-left: 20px;
 }
@@ -135,7 +135,7 @@ h1::selection {
     }
     .headline-wrapper {
         margin-top: 100px;
-        width: 100%;
+        width: 80%;
         height: 200px;
         margin-left: 20px;
     }

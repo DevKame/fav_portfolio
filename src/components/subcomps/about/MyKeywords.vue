@@ -76,6 +76,7 @@ a {
 .keyword-content {
     width: calc(100% - 4px);
     height: 100%;
+    padding-left: 12px;
     background: var(--prim) linear-gradient(to right, var(--prim), rgba(170,170,170,.1) 120%);
     border-radius: inherit;
     border-left: 2px solid black;
@@ -100,13 +101,28 @@ a {
     margin: 16px 0;
     box-shadow: 0 0 0 2px #c7c7c7;
     transform: translate(200%, 0);
+    width: 90%;
 }
-@media screen and (min-width: 1200px) {
+.keyword-content svg + * {
+    margin-left: 12px;
+}
+@media screen and (min-width: 576px) {
+    .keyword-content {
+        padding-left: 25px;
+    }
+    .keyword-content svg + * {
+        margin-left: 25px;
+    }
+}
+@media screen and (min-width: 1400px) {
     .keyword-content {
         padding-left: 50px;
     }
     .keyword-content svg + * {
         margin-left: 50px;
+    }
+    .my-keywords {
+        width: 70%;
     }
 }
 </style>
