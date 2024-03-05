@@ -2,6 +2,7 @@
   <the-bar></the-bar>
   <the-header></the-header>
   <the-about></the-about>
+  <the-work></the-work>
   <!-- <section class="space"></section> -->
 </template>
 
@@ -9,6 +10,7 @@
 import TheHeader from "./components/singleUse/TheHeader.vue";
 import TheBar from "./components/singleUse/TheBar.vue";
 import TheAbout from "./components/singleUse/TheAbout.vue";
+import TheWork from "./components/singleUse/TheWork.vue";
 
 import { onMounted, ref, computed, provide } from "vue";
 // import { ProgressKey } from "./types/keys";
@@ -29,10 +31,10 @@ provide("wait", wait);
 // SET A SCROLL LISTENER TO THE WINDOW ELEMENT
 onMounted(() => {
   window.addEventListener("scroll", e => {
-    e.stopPropagation();
-    console.clear();
-    console.log(e.target);
-    console.log(e.currentTarget);
+    // e.stopPropagation();
+    // console.clear();
+    // console.log(e.target);
+    // console.log(e.currentTarget);
     sval.value = scrollY;
   });
 });
