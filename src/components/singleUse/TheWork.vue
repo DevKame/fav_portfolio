@@ -4,18 +4,40 @@
         <div class="work-interface d-flex justify-content-start align-items-center border border-danger">
 
             <div class="work-switcher d-flex flex-column justify-content-start align-items-center border border-info">
-                <div @click="scrollLeftTop" class="switcher-arrow-wrapper lefttop-arrow-wrapper d-flex justify-content-start align-items-center border border-warning">
+                <div @click="moveTopLeft" class="switcher-arrow-wrapper lefttop-arrow-wrapper d-flex justify-content-start align-items-center border border-warning">
 
                 </div>
                 <div class="switcher-button-wrapper position-relative overflow-y-hidden">
+
                     <div class="switcher-actual-container position-absolute d-flex flex-column justify-content-around align-items-center" ref="btnWrapper">
-                        <button class="switcher-buttons rounded-circle portfolio-work"></button>
-                        <button class="switcher-buttons rounded-circle sport-work"></button>
-                        <button class="switcher-buttons rounded-circle math-work"></button>
-                        <button class="switcher-buttons rounded-circle vocab-work"></button>
+                        <div class="work-btn-wrapper top d-flex justify-content-center align-items-center">
+                            <transition name="work-buttons" mode="out-in">
+                                <button v-if="workTopButton === 'port'" class="switcher-buttons rounded-circle portfolio-work"></button>
+                                <button v-else-if="workTopButton === 'sport'" class="switcher-buttons rounded-circle sport-work"></button>
+                                <button v-else-if="workTopButton === 'math'" class="switcher-buttons rounded-circle math-work"></button>
+                                <button v-else-if="workTopButton === 'vocab'" class="switcher-buttons rounded-circle vocab-work"></button>
+                            </transition>
+                        </div>
+                        <div class="work-btn-wrapper middle d-flex justify-content-center align-items-center">
+                            <transition name="work-buttons" mode="out-in">
+                                <button v-if="workTopButton === 'port'" class="switcher-buttons rounded-circle sport-work"></button>
+                                <button v-else-if="workTopButton === 'sport'" class="switcher-buttons rounded-circle math-work"></button>
+                                <button v-else-if="workTopButton === 'math'" class="switcher-buttons rounded-circle vocab-work"></button>
+                                <button v-else-if="workTopButton === 'vocab'" class="switcher-buttons rounded-circle portfolio-work"></button>
+                            </transition>
+                        </div>
+                        <div class="work-btn-wrapper bot d-flex justify-content-center align-items-center">
+                            <transition name="work-buttons" mode="out-in">
+                                <button v-if="workTopButton === 'port'" class="switcher-buttons rounded-circle math-work"></button>
+                                <button v-else-if="workTopButton === 'sport'" class="switcher-buttons rounded-circle vocab-work"></button>
+                                <button v-else-if="workTopButton === 'math'" class="switcher-buttons rounded-circle portfolio-work"></button>
+                                <button v-else-if="workTopButton === 'vocab'" class="switcher-buttons rounded-circle sport-work"></button>
+                            </transition>
+                        </div>
                     </div>
+                    <!-- <button class="switcher-buttons rounded-circle vocab-work"></button> -->
                 </div>
-                <div class="switcher-arrow-wrapper rightbot-arrow-wrapper d-flex justify-content-start align-items-center border border-warning">
+                <div @click="moveTopLeft" class="switcher-arrow-wrapper rightbot-arrow-wrapper d-flex justify-content-start align-items-center border border-warning">
                     
                 </div>
             </div>
@@ -31,26 +53,23 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-const btnWrapper = ref<HTMLDivElement>();
+let workTopButton = ref<string>("port");
 
-
-function scrollLeftTop() {
-    const lastButton = btnWrapper.value!.lastElementChild!;
-    const wrappertop = btnWrapper.value!.clientTop;
-    const wrapperbot = btnWrapper.value!.clientTop + btnWrapper.value!.clientHeight;
-
-    const btntop = lastButton.clientTop;
-    const btnbot = lastButton.clientTop + lastButton.clientHeight;
-    
-    console.log("btnztop:", btntop);
-    console.log("btnzbot:", btnbot);
-
-    console.log("wrappertop:", wrappertop);
-    console.log("wrapperbot:", wrapperbot);
-        console.log(getComputedStyle(btnWrapper.value!).top);
-        let currentTop = +(getComputedStyle(btnWrapper.value!).top.replace("px", ""));
-        let newTop = currentTop - 200;
-        btnWrapper.value!.style.top = newTop + "px";
+function moveTopLeft(): void {
+    switch(workTopButton.value) {
+        case "port":
+            workTopButton.value = "sport";
+            break;
+        case "sport":
+            workTopButton.value = "math";
+            break;
+        case "math":
+            workTopButton.value = "vocab";
+            break;
+        case "vocab":
+            workTopButton.value = "port";
+            break;
+    }
 }
 </script>
 
@@ -66,35 +85,62 @@ function scrollLeftTop() {
     .portfolio-work {
         background-image: radial-gradient(rgba(200,200,200, .3) 55%, rgba(200,200,200, 1)),
                           url("@/assets/img/work_backgrounds/buttons/portfolio_btn.png");
-        background-size: 100%;
     }
     .sport-work {
         background-image: radial-gradient(rgba(200,200,200, .3) 55%, rgba(200,200,200, 1)),
                           url("@/assets/img/work_backgrounds/buttons/sport_btn.png");
-        background-size: 100%;
     }
     .math-work {
         background-image: radial-gradient(rgba(200,200,200, .3) 55%, rgba(200,200,200, 1)),
                           url("@/assets/img/work_backgrounds/buttons/math_btn.png");
-        background-size: 100%;
     }
     .vocab-work {
         background-image: radial-gradient(rgba(200,200,200, .3) 55%, rgba(200,200,200, 1)),
                           url("@/assets/img/work_backgrounds/buttons/vocab_btn.png");
-        background-size: 100%;
     }
-    .switcher-actual-container button {
-        width: 250px;
-        aspect-ratio: 1;
-        margin: 30px 0;
+    .work-buttons-enter-from {
+        transform: translate(0, calc(-100% + 20px));
+    }
+    .work-buttons-enter-active {
+        transition: transform .3s ease;
+    }
+    .work-buttons-leave-active {
+        transition: transform .3s ease;
+    }
+    .work-buttons-enter-to,
+    .work-buttons-leave-from {
+        transform: translate(0, 0);
+    }
+    .work-buttons-leave-to {
+        transform: translate(0, calc(+100% + 20px));
+    }
+    .work-btn-wrapper button {
+        width: 100%;
+        height: 100%;
         border: none;
         background-color: transparent;
         box-shadow: 0 0 10px 3px rgba(200,200,200, .7);
+        background-size: 100%;
+    }
+    .work-btn-wrapper.top {
+        z-index: 5;
+    }
+    .work-btn-wrapper.middle {
+        z-index: 4;
+    }
+    .work-btn-wrapper.bot {
+        z-index: 3;
+    }
+    .work-btn-wrapper {
+        width: 200px;
+        height: 200px;
+        margin: 20px 0;
     }
     .switcher-actual-container {
         top: 0;
         left: 0;
         width: 100%;
+        height: 100%;
         border: 1px solid red;
     }
     .switcher-button-wrapper {
