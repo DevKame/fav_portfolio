@@ -18,11 +18,11 @@ import SectionHeadlines from "./components/multiUse/SectionHeadlines.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 
-import { faLocationDot, faBriefcase, faUser, faAt } from "@fortawesome/free-solid-svg-icons";
+import { faLocationDot, faBriefcase, faUser, faAt, faCaretUp, faCaretDown, faUpRightFromSquare, faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
 
-library.add(faUser,faLocationDot,faBriefcase, faGithub, faAt);
+library.add(faUser,faLocationDot,faBriefcase, faGithub, faAt, faCaretUp, faCaretDown, faUpRightFromSquare, faGithub, faCaretLeft, faCaretRight);
 
 import { createApp } from 'vue'
 import App from './App.vue'
