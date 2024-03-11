@@ -7,18 +7,27 @@ const dir = ref("top");
 const transition_ready = ref(true);
 
 
-const headlines: Headlines = reactive({
-    port: "MY_PORTFOLIO_WEBSITE",
-    sport: "SPORTCLUB_CALENDAR",
-    math: "MENTAL_MATH_TRAINER",
+const headlines: WorkinfoText = reactive({
+    port: "MY_PORTFOLIO",
+    sport: "CALENDAR",
+    math: "MENTAL_TRAINER",
     vocab: "VOCAB_TRAINER",
 });
+const workInfos: WorkinfoText = reactive({
+    port: "Feel_free_to_inspect_the_tech_stack_and_Code_used_for_creating_this_exact_Website",
+    sport: "A_management_tool_for_a_sportsclub._Create,_edit,_delete_events,_trainers,_students_and_groups._Every_event_is_visible_in_the_interactive_calendar._Amongs_other_things_trainers_can_quick-apply_to_train_events_in_the_calendar_as_well_as_students_are_able_to_quick-signin_as_participants",
+    math: "MENTAL_TRAINER",
+    vocab: "VOCAB_TRAINER",
+})
 
-interface Headlines {
+interface WorkinfoText {
     [key: string]: string;
 }
 const currHeadline = computed(() => {
     return headlines[workTopButton.value].split("");
+});
+const currText = computed(() => {
+    return workInfos[workTopButton.value].split("");
 });
 
 function disableReady(): void {
@@ -58,9 +67,6 @@ function moveTopLeft(direction: string): void {
 onMounted(() => {
     console.log("workTopButton:", workTopButton.value);
 })
-function hideCharacters(el: HTMLElement): void {
-    console.log(el);
-}
 function doStuff() {
     //
 }
@@ -81,7 +87,7 @@ function doStuff() {
                 </div>
                 <div class="switcher-button-wrapper position-relative overflow-y-hidden">
 
-                    <div class="switcher-actual-container position-absolute d-flex flex-column justify-content-around align-items-center" ref="btnWrapper">
+                    <div class="switcher-actual-container position-absolute d-flex flex-column justify-content-center align-items-center" ref="btnWrapper">
                         <div class="work-btn-wrapper top d-flex justify-content-center align-items-center position-relative">
                             <transition :name="'work-buttons-to-' + dir" @before-enter="disableReady" @after-enter="enableReady">
                                 <button v-if="workTopButton === 'port'" class="switcher-buttons rounded-circle portfolio-work"></button>
@@ -117,8 +123,9 @@ function doStuff() {
             <div class="work-info mt-auto p-2 d-flex flex-column justify-content-start align-items-center border border-success">
                 
                 <div class="work-info-text-wrapper d-flex justify-content-start align-items-start">
-                    <transition-group tag="h3" :css="false" mode="out-in" @before-leave="hideCharacters">
+                    <!-- <transition-group tag="h3" :css="false" mode="out-in">
                         <div
+                            @before-leave="hideCharacters"
                             :class="{hide_char: char === '_'}"
                             class="work-headline-span-wrapper d-inline-block"
                             v-for="(char, index) in currHeadline"
@@ -127,7 +134,99 @@ function doStuff() {
                                 {{ char }}
                             </span>
                         </div>
-                    </transition-group>
+                    </transition-group> -->
+                    <transition name="work-headlines" mode="out-in">
+                        <h3 v-if="workTopButton === 'port'">
+                            <div
+                                :class="{hide_char: char === '_'}"
+                                class="work-headline-span-wrapper d-inline-block"
+                                v-for="(char, index) in currHeadline"
+                                :key="`char-${index}`">
+                                <span>
+                                    {{ char }}
+                                </span>
+                            </div>
+                        </h3>
+                        <h3 v-else-if="workTopButton === 'sport'">
+                            <div
+                                :class="{hide_char: char === '_'}"
+                                class="work-headline-span-wrapper d-inline-block"
+                                v-for="(char, index) in currHeadline"
+                                :key="`char-${index}`">
+                                <span>
+                                    {{ char }}
+                                </span>
+                            </div>
+                        </h3>
+                        <h3 v-else-if="workTopButton === 'math'">
+                            <div
+                                :class="{hide_char: char === '_'}"
+                                class="work-headline-span-wrapper d-inline-block"
+                                v-for="(char, index) in currHeadline"
+                                :key="`char-${index}`">
+                                <span>
+                                    {{ char }}
+                                </span>
+                            </div>
+                        </h3>
+                        <h3 v-else-if="workTopButton === 'vocab'">
+                            <div
+                                :class="{hide_char: char === '_'}"
+                                class="work-headline-span-wrapper d-inline-block"
+                                v-for="(char, index) in currHeadline"
+                                :key="`char-${index}`">
+                                <span>
+                                    {{ char }}
+                                </span>
+                            </div>
+                        </h3>
+                    </transition>
+                    <transition name="work-headlines" mode="out-in">
+                        <p v-if="workTopButton === 'port'">
+                            <div
+                                :class="{hide_char: char === '_'}"
+                                class="work-headline-span-wrapper d-inline-block"
+                                v-for="(char, index) in currText"
+                                :key="`char-${index}`">
+                                <span>
+                                    {{ char }}
+                                </span>
+                            </div>
+                        </p>
+                        <p v-else-if="workTopButton === 'sport'">
+                            <div
+                                :class="{hide_char: char === '_'}"
+                                class="work-headline-span-wrapper d-inline-block"
+                                v-for="(char, index) in currText"
+                                :key="`char-${index}`">
+                                <span>
+                                    {{ char }}
+                                </span>
+                            </div>
+                        </p>
+                        <p v-else-if="workTopButton === 'math'">
+                            <div
+                                :class="{hide_char: char === '_'}"
+                                class="work-headline-span-wrapper d-inline-block"
+                                v-for="(char, index) in currText"
+                                :key="`char-${index}`">
+                                <span>
+                                    {{ char }}
+                                </span>
+                            </div>
+                        </p>
+                        <p v-else-if="workTopButton === 'vocab'">
+                            <div
+                                :class="{hide_char: char === '_'}"
+                                class="work-headline-span-wrapper d-inline-block"
+                                v-for="(char, index) in currText"
+                                :key="`char-${index}`">
+                                <span>
+                                    {{ char }}
+                                </span>
+                            </div>
+                        </p>
+                    </transition>
 
                 </div>
             </div>
@@ -146,6 +245,19 @@ function doStuff() {
 @media screen and (min-width: 1200px) {
 }
 @media screen and (min-width: 1400px) {
+    .work-headlines-enter-from > div,
+    .work-headlines-leave-to > div {
+        transform: scale(0, 1) translate(-50px, 0);
+    }
+
+    .work-headlines-enter-active,
+    .work-headlines-leave-active {
+        transition: transform .25s ease;
+    }
+    .work-headlines-enter-to > div,
+    .work-headlines-leave-from > div {
+        transform: scale(1, 1) translate(0, 0);
+    }
     .hide_char {
         opacity: 0;
     }
@@ -154,7 +266,7 @@ function doStuff() {
         transition: all .25s ease;
     }
     .work-info-text-wrapper:hover .work-headline-span-wrapper {
-        transform: scale(0, 1) translate(30px, 0);
+        transform: scale(0, 1) translate(-50px, 0);
         /* opacity: 0; */
     }
     .img_bg-enter-from,
@@ -201,36 +313,31 @@ function doStuff() {
     .work-buttons-to-top-enter-from {
         top: calc(100% + 40px);
     }
-    .work-buttons-to-top-enter-active {
+    .work-buttons-to-top-enter-active,
+    .work-buttons-to-top-leave-active,
+    .work-buttons-to-bot-enter-active,
+    .work-buttons-to-bot-leave-active
+     {
         transition: top .5s ease;
     }
     .work-buttons-to-top-enter-to {
         top: 0;
+        /* border: 4px solid red !important; */
     }
     .work-buttons-to-top-leave-from {
         top: 0;
     }
-    .work-buttons-to-top-leave-active {
-        transition: top .5s ease;
-    }
     .work-buttons-to-top-leave-to {
         top: calc(-100% - 40px);
+        /* border: 4px solid blue !important; */
     }
     
     .work-buttons-to-bot-enter-from {
         top: calc(-100% - 40px);
     }
-    .work-buttons-to-bot-enter-active {
-        transition: top .5s ease;
-    }
-    .work-buttons-to-bot-enter-to {
-        top: 0;
-    }
+    .work-buttons-to-bot-enter-to,
     .work-buttons-to-bot-leave-from {
         top: 0;
-    }
-    .work-buttons-to-bot-leave-active {
-        transition: top .5s ease;
     }
     .work-buttons-to-bot-leave-to {
         top: calc(100% + 40px);
@@ -251,7 +358,7 @@ function doStuff() {
         position: absolute;
         top: 0;
         left: -17px;
-        width: 3px;
+        width: 1px;
         height: 100%;
         background-color: var(--tert);
     }
@@ -259,8 +366,8 @@ function doStuff() {
         content: "";
         position: absolute;
         top: 10px;
-        left: -28px;
-        width: 7px;
+        left: -24px;
+        width: 2px;
         height: calc(100% - 20px);
         background-color: var(--tert);
     }
