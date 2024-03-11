@@ -1,9 +1,14 @@
 
 
 :root {
-    --prim: #152145;
+    --prim: rgb(21, 33, 69);
     --prim-dark: #111b3a;
     --prim-weak: #1b2647;
+
+    --prim-2: rgb(63, 70, 111);
+    --prim-3: rgb(106, 112, 155);
+    --prim-4: rgb(151, 156, 202);
+    --prim-5: rgb(198, 203, 251);
     --sec: #050b1d;
     --tert: #c28513;
 }
