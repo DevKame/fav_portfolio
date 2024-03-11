@@ -66,7 +66,24 @@ function moveTopLeft(direction: string): void {
 }
 onMounted(() => {
     console.log("workTopButton:", workTopButton.value);
-})
+});
+async function hideCharacters(el: Element) {
+    console.clear();
+    console.log(el);
+    const divs = el.querySelectorAll("div");
+    console.log(divs);
+    for(let div of divs) {
+        console.log(div);
+        // await div.animate({transform: "scale(0, 1) translate(-30px, 0)"}, {
+        //     duration: 500,
+        //     iterations: 1,
+        //     fill: "forwards",
+        // }).finished;
+    }
+}
+// async function showCharacters(el: Element) {
+//     console.warn(el);
+// }
 function doStuff() {
     //
 }
@@ -135,7 +152,8 @@ function doStuff() {
                             </span>
                         </div>
                     </transition-group> -->
-                    <transition name="work-headlines" mode="out-in">
+                    <!-- <transition name="work-headlines" :css="false" mode="out-in" @leave="hideCharacters" @enter="showCharacters"> -->
+                    <transition name="work-headlines" :css="false" mode="out-in" @leave="hideCharacters">
                         <h3 v-if="workTopButton === 'port'">
                             <div
                                 :class="{hide_char: char === '_'}"
@@ -181,52 +199,6 @@ function doStuff() {
                             </div>
                         </h3>
                     </transition>
-                    <transition name="work-headlines" mode="out-in">
-                        <p v-if="workTopButton === 'port'">
-                            <div
-                                :class="{hide_char: char === '_'}"
-                                class="work-headline-span-wrapper d-inline-block"
-                                v-for="(char, index) in currText"
-                                :key="`char-${index}`">
-                                <span>
-                                    {{ char }}
-                                </span>
-                            </div>
-                        </p>
-                        <p v-else-if="workTopButton === 'sport'">
-                            <div
-                                :class="{hide_char: char === '_'}"
-                                class="work-headline-span-wrapper d-inline-block"
-                                v-for="(char, index) in currText"
-                                :key="`char-${index}`">
-                                <span>
-                                    {{ char }}
-                                </span>
-                            </div>
-                        </p>
-                        <p v-else-if="workTopButton === 'math'">
-                            <div
-                                :class="{hide_char: char === '_'}"
-                                class="work-headline-span-wrapper d-inline-block"
-                                v-for="(char, index) in currText"
-                                :key="`char-${index}`">
-                                <span>
-                                    {{ char }}
-                                </span>
-                            </div>
-                        </p>
-                        <p v-else-if="workTopButton === 'vocab'">
-                            <div
-                                :class="{hide_char: char === '_'}"
-                                class="work-headline-span-wrapper d-inline-block"
-                                v-for="(char, index) in currText"
-                                :key="`char-${index}`">
-                                <span>
-                                    {{ char }}
-                                </span>
-                            </div>
-                        </p>
-                    </transition>
 
                 </div>
             </div>
@@ -245,7 +217,7 @@ function doStuff() {
 @media screen and (min-width: 1200px) {
 }
 @media screen and (min-width: 1400px) {
-    .work-headlines-enter-from > div,
+    /* .work-headlines-enter-from > div,
     .work-headlines-leave-to > div {
         transform: scale(0, 1) translate(-50px, 0);
     }
@@ -257,7 +229,7 @@ function doStuff() {
     .work-headlines-enter-to > div,
     .work-headlines-leave-from > div {
         transform: scale(1, 1) translate(0, 0);
-    }
+    } */
     .hide_char {
         opacity: 0;
     }
