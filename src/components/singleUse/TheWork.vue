@@ -80,10 +80,6 @@ const githublink = computed(() => {
     return link!;
 });
 const screenwidth = ref(innerWidth);
-const smallwindow = computed(() => {
-    console.warn("innerWidth:", screenwidth.value);
-    return screenwidth.value < 992;
-});
 const toplefticon = computed(() => {
     let icon: string;
     switch(innerWidth < 992) {
