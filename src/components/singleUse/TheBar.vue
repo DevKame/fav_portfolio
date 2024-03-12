@@ -25,7 +25,7 @@ watch(progress, val => {
 
 <style scoped>
 aside {
-    z-index: 2;
+    z-index: 6;
     position: fixed;
     top: 0;
     left: 0;

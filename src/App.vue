@@ -3,6 +3,7 @@
   <the-header></the-header>
   <the-about></the-about>
   <the-work></the-work>
+  <the-stack></the-stack>
   <!-- <section class="space"></section> -->
 </template>
 
@@ -11,6 +12,7 @@ import TheHeader from "./components/singleUse/TheHeader.vue";
 import TheBar from "./components/singleUse/TheBar.vue";
 import TheAbout from "./components/singleUse/TheAbout.vue";
 import TheWork from "./components/singleUse/TheWork.vue";
+import TheStack from "./components/singleUse/TheStack.vue";
 
 import { onMounted, ref, computed, provide } from "vue";
 // import { ProgressKey } from "./types/keys";
