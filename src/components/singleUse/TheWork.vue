@@ -79,12 +79,38 @@ const githublink = computed(() => {
     }
     return link!;
 });
+const screenwidth = ref(innerWidth);
 const smallwindow = computed(() => {
-    return window.innerWidth < 992;
-})
+    console.warn("innerWidth:", screenwidth.value);
+    return screenwidth.value < 992;
+});
+const toplefticon = computed(() => {
+    let icon: string;
+    switch(innerWidth < 992) {
+        case true:
+            icon = "fa-solid fa-caret-left";
+            break;
+        case false:
+            icon = "fa-solid fa-caret-up";
+            break;
+    }
+    return icon!;
+});
+const botrighticon = computed(() => {
+    let icon: string;
+    switch(innerWidth < 992) {
+        case true:
+            icon = "fa-solid fa-caret-right";
+            break;
+        case false:
+            icon = "fa-solid fa-caret-down";
+            break;
+    }
+    return icon!;
+});
 </script>
 <template>
-    <section class="work px-4 px-xl-5">
+    <section class="work px-2 px-sm-4 px-xl-5">
         <section-headline headline="WORK"></section-headline>
         <div class="work-interface d-flex flex-column flex-lg-row justify-content-start align-items-center position-relative">
             <transition name="img_bg" mode="out-in">
@@ -93,11 +119,10 @@ const smallwindow = computed(() => {
                 <img v-else-if="workTopButton === 'math'" alt="" class="position-absolute work-interface-bg math-bg">
                 <img v-else-if="workTopButton === 'vocab'" alt="" class="position-absolute work-interface-bg vocab-bg">
             </transition>
-            <div class="work-switcher border border-warning d-flex flex-row flex-lg-column justify-content-start align-items-center">
+            <div class="work-switcher d-flex flex-row flex-lg-column justify-content-start align-items-center">
 
                 <div @click="moveTopLeft('top')" class="switcher-arrow-wrapper lefttop-arrow-wrapper d-flex justify-content-center align-items-center">
-                    <fa-icon v-if="smallwindow" icon="fa-solid fa-caret-left"></fa-icon>
-                    <fa-icon v-else icon="fa-solid fa-caret-up"></fa-icon>
+                    <fa-icon :icon="toplefticon"></fa-icon>
                 </div>
 
                 <div class="switcher-button-wrapper position-relative overflow-hidden">
@@ -131,16 +156,18 @@ const smallwindow = computed(() => {
                 </div>
 
                 <div @click="moveTopLeft('bot')" class="switcher-arrow-wrapper rightbot-arrow-wrapper d-flex justify-content-center align-items-center">
-                    <fa-icon icon="fa-solid fa-caret-down"></fa-icon>
+                    <fa-icon :icon="botrighticon"></fa-icon>
                 </div>
             </div>
 
-            <div class="work-info border border-info mt-auto p-2 d-flex flex-column justify-content-start align-items-center">
+            <div class="work-info mt-auto p-2 d-flex flex-column justify-content-start align-items-center">
                 
-                <div class="work-info-text-wrapper d-flex justify-content-center align-items-start">
+                <div class="work-info-text-wrapper d-flex justify-content-center align-items-start overflow-y-auto">
                     <transition name="work-headlines" mode="out-in">
                         <div v-if="workTopButton === 'port'" class="info-holder d-flex flex-column justify-content-start align-items-start">
                             <h3>MY PORTFOLIO</h3>
+                            <p>You just came across the perfect place to checkout  the code of this particular webiste.</p>
+                            <p>Browse across my reference porjects and inspect their tech stack. If you have questions, send me a message at the bottom of this site.</p>
                             <p>Learn about my current work and what applications i already build. Feel free to use every functionality they offer!</p>
                         </div>
                         <div v-else-if="workTopButton === 'sport'" class="info-holder d-flex flex-column justify-content-start align-items-start">
@@ -167,7 +194,7 @@ const smallwindow = computed(() => {
                 </div>
             </div>
 
-            <div class="work-menu border border-warning d-flex flex-row flex-lg-column justify-content-end align-items-center">
+            <div class="work-menu d-flex flex-row flex-lg-column justify-content-end align-items-center">
                 <a :href="sitelink" target="_blank" class="work-links overflow-hidden py-2 px-4 position-relative rounded-3 d-flex justify-content-center align-items-center mx-2 mx-lg-0 my-lg-3">
                     <fa-icon icon="fa-solid fa-up-right-from-square" class="me-2"></fa-icon>
                     Visit Site
@@ -193,7 +220,7 @@ const smallwindow = computed(() => {
     box-shadow: 0 0 10px 5px black inset;
     z-index: 0;
     opacity: 0;
-    transition: opacity .3s ease-in;
+    transition: opacity .2s ease-in;
 }
 .work-links:hover::after {
     width: 50%;
@@ -205,7 +232,7 @@ const smallwindow = computed(() => {
 .work-links::after {
     content: "";
     position: absolute;
-    transition: all .3s ease-in;
+    transition: all .2s ease-in;
     width: 0;
     height: 100%;
     background-color: var(--tert);
@@ -320,9 +347,12 @@ const smallwindow = computed(() => {
     width: 100%;
     height: 20%;
 }
+.work-info *::selection {
+    all: unset;
+}
 .work-info {
     width: 100%;
-    height: 40%;
+    height: 60%;
     color: #c7c7c7;
     font-size: 16px;
 }
@@ -411,6 +441,24 @@ const smallwindow = computed(() => {
     opacity: 1;
     transform: scale(1);
 }
+.work-btn-wrapper.top::before {
+    content: "";
+    position: absolute;
+    top: -17px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: var(--tert);
+}
+.work-btn-wrapper.top::after {
+    content: "";
+    position: absolute;
+    top: -24px;
+    left: 10px;
+    width: calc(100% - 20px);
+    height: 2px;
+    background-color: var(--tert);
+}
 @media screen and (min-width: 410px) {
     .work-btn-wrapper {
         width: 70px;
@@ -475,6 +523,24 @@ const smallwindow = computed(() => {
     }
 }
 @media screen and (min-width: 992px) {
+    .work-btn-wrapper.top::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -17px;
+        width: 1px;
+        height: 100%;
+        background-color: var(--tert);
+    }
+    .work-btn-wrapper.top::after {
+        content: "";
+        position: absolute;
+        top: 10px;
+        left: -24px;
+        width: 2px;
+        height: calc(100% - 20px);
+        background-color: var(--tert);
+    }
     .work-switcher {
         width: 20%;
         height: 100%;
@@ -571,24 +637,6 @@ const smallwindow = computed(() => {
         width: 150px;
         height: 150px;
         margin: 20px 0;
-    }
-    .work-btn-wrapper.top::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -17px;
-        width: 1px;
-        height: 100%;
-        background-color: var(--tert);
-    }
-    .work-btn-wrapper.top::after {
-        content: "";
-        position: absolute;
-        top: 10px;
-        left: -24px;
-        width: 2px;
-        height: calc(100% - 20px);
-        background-color: var(--tert);
     }
 }
 @media screen and (min-width: 1400px) {
