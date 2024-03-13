@@ -1,6 +1,7 @@
 <template>
     <section class="stack overflow-x-hidden px-2 px-sm-4 px-xl-5 d-flex flex-column justify-content-start align-items-center">
         <section-headline headline="SKILLS"></section-headline>
+        <the-quote :quote="quote"></the-quote>
         <div class="skill-item-wrapper d-flex flex-wrap justify-content-between align-items-center">
             <skill-item text="Javascript"></skill-item>
             <skill-item text="Typescript"></skill-item>
@@ -18,7 +19,14 @@
 </template>
 
 <script setup lang="ts">
+import { reactive } from 'vue';
+
 import SkillItem from '../multiUse/SkillItem.vue';
+
+const quote = reactive({
+    quote: '"Wisdom is not a product of schooling but of the lifelong attempt to acquire it."',
+    person: "Einstein"
+});
 </script>
 
 <style scoped>

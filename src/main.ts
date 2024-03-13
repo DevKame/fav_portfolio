@@ -12,6 +12,7 @@ import "./assets/fonts/fonts.css";
 
 //CUSTOM COMPONENTS:
 import SectionHeadlines from "./components/multiUse/SectionHeadlines.vue";
+import TheQuote from "./components/multiUse/TheQuote.vue";
 
 
 // FONT AWESOME
@@ -29,5 +30,6 @@ import App from './App.vue'
 
 const app = createApp(App);
 app.component("section-headline", SectionHeadlines);
+app.component("the-quote", TheQuote);
 app.component("fa-icon", FontAwesomeIcon);
 app.mount('#app')
