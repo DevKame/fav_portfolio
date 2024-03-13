@@ -4,6 +4,7 @@
   <the-about></the-about>
   <the-work></the-work>
   <the-stack></the-stack>
+  <the-message></the-message>
   <section class="space"></section>
 </template>
 
@@ -13,6 +14,7 @@ import TheBar from "./components/singleUse/TheBar.vue";
 import TheAbout from "./components/singleUse/TheAbout.vue";
 import TheWork from "./components/singleUse/TheWork.vue";
 import TheStack from "./components/singleUse/TheStack.vue";
+import TheMessage from "./components/singleUse/TheMessage.vue";
 
 import { onMounted, ref, computed, provide } from "vue";
 
@@ -25,9 +27,13 @@ const scrollProgress = computed(() => {
   const max = body.getBoundingClientRect().height - innerHeight;
   return (sval.value / max) * 100;
 });
+/** WAIT FUNCTION TO TIME COMPLEX ANIMATIONS
+ *  @param {number} ms      => TIME BEFORE NEXT ANIMATION STEP STARTS
+ *  @return {Promise}       => GETS RESOLVED AFTER SAID TIME. USED FOR ASYNC-USE */
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 //PROVIDING THE SCROLL PROGRESS FOR "FADING IN" OF OTHER COMPS
 provide("progressvalue", scrollProgress);
+//PROVIDING THE WAIT FUNCTION TO USE FOR COMPLEX ANIMATIONS
 provide("wait", wait);
 // SET A SCROLL LISTENER TO THE WINDOW ELEMENT
 onMounted(() => {

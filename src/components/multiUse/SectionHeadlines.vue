@@ -1,11 +1,12 @@
 <template>
-    <h1 class="section-headlines">{{ props.headline }}</h1>
+    <h1 class="section-headlines" :class="{smaller: smaller}">{{ props.headline }}</h1>
 </template>
 
 <script lang="ts" setup>
 import { defineProps } from 'vue';
 const props = defineProps([
     "headline",
+    "smaller",
 ]);
 </script>
 
@@ -27,6 +28,9 @@ const props = defineProps([
     }
 
 
+    h1.section-headlines.smaller {
+            font-size: clamp(40px, 13vw, 200px) !important;
+        }
     @media screen and (min-width: 576px) {
         h1.section-headlines {
             font-size: 100px;
@@ -40,6 +44,11 @@ const props = defineProps([
     @media screen and (min-width: 992px) {
         h1.section-headlines {
             font-size: 200px;
+        }
+    }
+    @media screen and (min-width: 1200px) {
+        h1.section-headlines.smaller {
+            font-size: 180px;
         }
     }
     @media screen and (min-width: 1400px) {
