@@ -2,12 +2,18 @@
 
 <script lang="ts" setup>
 
-import { ref, onMounted, inject, watch } from 'vue';
+import { ref, onMounted, inject, watch, reactive } from 'vue';
 
 import MyKeywords from '../subcomps/about/MyKeywords.vue';
 
 const aboutSection = ref<HTMLElement>();
 const sectionVisible = ref<boolean>(false);
+
+
+const quote = reactive({
+    quote: '"You can either be too strong to fail or too weak to try."',
+    person: "Yen"
+});
 
 const about1 = ref<string>("Its been 4 years when i started my journey as a webdeveloper");
 const about2 = ref<string>("At that time i stumbled across a magazine that offered courses for personal training and development, from which i chose the developer course.");
@@ -58,6 +64,7 @@ async function openTextbox() {
 <template>
     <section class="about px-4 px-xl-5 d-flex flex-wrap justify-content-around align-items-center" ref="aboutSection">
         <section-headline headline="ABOUT"></section-headline>
+        <the-quote :quote="quote"></the-quote>
         <div class="flex-half px-2 px-sm-0 d-flex flex-column justify-content-start align-items-center">
             <div class="text-box d-flex justify-content-end align-items-center position-relative" ref="aboutTextbox">
                 <div class="text-box-aside bg-tert position-absolute"></div>
