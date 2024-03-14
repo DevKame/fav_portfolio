@@ -28,15 +28,12 @@ const sectionVisible = computed(() => {
 
 
 watch(sectionVisible, val => {
-    console.log(val);
     if(val) {
         flyKeyword();
     }
 });
 const keyword = ref<HTMLDivElement>();
 async function flyKeyword() {
-    console.log(props.delay);
-    console.log(typeof(props.delay));
     await keyword.value!.animate(
         [
             {transform: "translate(-30px, 0)"},

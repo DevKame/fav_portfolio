@@ -18,11 +18,8 @@ let progress = inject<ComputedRef<number>>("progressvalue")!;
 watch(progress, () => {
     if(!isInView.value)
     {
-        console.clear();
         const el = wrapper.value;
         const topdata = el!.getBoundingClientRect().top;
-        console.log("topdata:", topdata);
-        console.log("topdata < 250:", topdata < 450);
         if(topdata < 450)
         {
             el!.classList.add("on_view");
@@ -36,6 +33,10 @@ watch(progress, () => {
 .quote-wrapper.on_view h1,
 .quote-wrapper.on_view h4 {
     opacity: .5;
+}
+.quote-wrapper.on_view h1::selection,
+.quote-wrapper.on_view h4::selection {
+    all: unset;
 }
 .quote-wrapper h1,
 .quote-wrapper h4 {

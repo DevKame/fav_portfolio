@@ -29,31 +29,47 @@ const props = defineProps([
 
 
     h1.section-headlines.smaller {
-            font-size: clamp(40px, 13vw, 200px) !important;
-        }
+        font-size: clamp(40px, 13vw, 200px) !important;
+        margin-left: 15px;
+    }
     @media screen and (min-width: 576px) {
         h1.section-headlines {
             font-size: 100px;
+        }
+        h1.section-headlines.smaller {
+            margin-left: 20px;
         }
     }
     @media screen and (min-width: 768px) {
         h1.section-headlines {
             font-size: 150px;
         }
+        h1.section-headlines.smaller {
+            margin-left: 40px;
+        }
     }
     @media screen and (min-width: 992px) {
         h1.section-headlines {
             font-size: 200px;
+        }
+        h1.section-headlines.smaller {
+            margin-left: 60px;
         }
     }
     @media screen and (min-width: 1200px) {
         h1.section-headlines.smaller {
             font-size: 180px;
         }
+        h1.section-headlines.smaller {
+            margin-left: 80px;
+        }
     }
     @media screen and (min-width: 1400px) {
         h1.section-headlines {
             font-size: 250px;
+        }
+        h1.section-headlines.smaller {
+            margin-left: 100px;
         }
     }
 </style>

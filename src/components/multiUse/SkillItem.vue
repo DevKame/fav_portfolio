@@ -58,11 +58,8 @@ let progress = inject<ComputedRef<number>>("progressvalue")!;
 watch(progress, () => {
     if(!isInView.value)
     {
-        console.clear();
         const el = skill_item.value;
         const topdata = el!.getBoundingClientRect().top;
-        console.log("topdata:", topdata);
-        console.log("topdata < 250:", topdata < 450);
         if(topdata < 450)
         {
             el!.classList.add("on_view");

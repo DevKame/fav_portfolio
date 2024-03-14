@@ -2,7 +2,7 @@
 
 <script lang="ts" setup>
 
-import { ref, onMounted, inject, watch, reactive } from 'vue';
+import { ref, inject, watch, reactive } from 'vue';
 
 import MyKeywords from '../subcomps/about/MyKeywords.vue';
 
@@ -26,9 +26,6 @@ const about5 = ref<string>("Feel free to checkout my skillset or send me a reque
 
 const aboutTextbox = ref<HTMLDivElement>();
 
-onMounted(() => {
-    console.log(aboutSection.value);
-});
 // INJECTED SCROLL PROGRESS OF THE DOCUMENT IN PERCENT
 // let progress = inject(ProgressKey);
 let progress = inject("progressvalue")!;
