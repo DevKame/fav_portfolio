@@ -5,7 +5,7 @@
                 <div class="message-wrapper p-3 container position-relative d-flex flex-column justify-content-start align-items-center">
                     <h1 class="me-auto position-relative">{{ msgTitle }}</h1>
 
-                    <div v-if="currentForm==='LANGUAGE'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
+                    <div v-if="currentForm ==='LANGUAGE'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
                         <h4 class="me-auto">{{ msgDesc }}</h4>
                         <div class="border-wrapper d-flex justify-content-center align-items-center">
                             <button @click="setLanguage('eng')" class="prim-btn lang-btn me-4 position-relative">
@@ -19,7 +19,7 @@
                         </div>
                     </div>
 
-                    <div v-if="currentForm==='REASON'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
+                    <div v-if="currentForm ==='REASON'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
                         <h4 class="me-auto">{{ msgDesc }}</h4>
                         <div class="border-wrapper d-flex flex-column justify-content-center align-items-center">
                             <button class="prim-btn type-btn my-3 position-relative">
@@ -31,9 +31,22 @@
                                 <div class="link-shadow position-absolute"></div>
                             </button>
                         </div>
-                        <form-footer></form-footer>
                     </div>
 
+                    <div class="form-footer d-flex justify-content-start align-items-center">
+                        <button v-if="showFooter" class="red-btn d-flex justify-content-center align-items-center position-relative overflow-hidden">
+                            RESET
+                            <div class="link-shadow position-absolute"></div>
+                        </button>
+                        <button v-if="showFooter" class="red-btn ms-3 d-flex justify-content-center align-items-center position-relative overflow-hidden">
+                            Back
+                            <div class="link-shadow position-absolute"></div>
+                        </button>
+                        <button v-if="showSubmit" class="prim-btn submit-btn ms-auto d-flex justify-content-center align-items-center position-relative overflow-hidden">
+                            Submit
+                            <div class="link-shadow position-absolute"></div>
+                        </button>
+                    </div>
                 </div>
             </div>
     </section>
@@ -42,14 +55,21 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 
-import FormFooter from "../subcomps/message/FormFooter.vue";
+// POINTS TO WETHER TO SHOW FOOTER OR NOT
+const showFooter = ref(false);
+// POINT WETHER TO SHOW SUBMIT BUTTON OR NOT
+const showSubmit = ref(false);
+// CHOSEN LANGUAGE
 const lang = ref<string>("none");
+// POINTS OUT WHAT FORM TO SHOW CURRENTLY
 const currentForm = ref("LANGUAGE");
+// HEADLINE TEXT ENG/GER
 const msgTitle = computed(() => {
     return lang.value === "none" ?
     "MESSAGE ME" : lang.value === "eng" ?
     "MESSAGE ME" : "DEINE NACHRICHT";
 });
+// SUBHEADLINE DESCRIPTION ENG/GER
 const msgDesc = computed(() => {
     let result: string;
     switch(currentForm.value) {
@@ -66,6 +86,7 @@ const msgDesc = computed(() => {
     }
     return result!;
 });
+// (WHAT KIND OF QUESTION)-BUTTONS ENG/GER
 const msgWebsiteQ = computed(() => {
     return lang.value === "none" ?
     "Message regarding a website" : lang.value === "eng" ?
@@ -76,13 +97,70 @@ const msgGeneralQ = computed(() => {
     "General message" : lang.value === "eng" ?
     "General message" : "Allgemeine Nachricht";
 });
+/** SETS THE LANGUAGE TO lg AND MAKES FOOTER VISIBLE
+ * @param {string} lg       => "eng" | "ger", provided by template */
 function setLanguage(lg: string): void {
     lang.value = lg;
     currentForm.value = "REASON";
+    showFooter.value = true;
 }
+const footerResetBtn = computed(() => {
+    return lang.value === "none" ?
+    "Message regarding a website" : lang.value === "eng" ?
+    "Message regarding a website" : "Nachricht bezüglich einer Website";
+});
+const footerBackBtn = computed(() => {
+    return lang.value === "none" ?
+    "General message" : lang.value === "eng" ?
+    "General message" : "Allgemeine Nachricht";
+});
+
 </script>
 
 <style scoped>
+.form-footer button:hover::after {
+    width: 50%;
+}
+.form-footer button::after {
+    right: 0;
+}
+.form-footer button:hover::before {
+    width: 50%;
+}
+.form-footer button::before {
+    left: 0;
+}
+.form-footer button::before,
+.form-footer button::after {
+    position: absolute;
+    content: "";
+    top: 0;
+    height: 100%;
+    width: 0;
+    z-index: -1;
+    background-color: var(--red);
+    transition: all .3s ease;
+}
+.form-footer button:hover .link-shadow {
+    opacity: 1;
+}
+.form-footer button:hover {
+    color: black;
+}
+.form-footer button {
+    background-color: transparent;
+    border: 3px solid var(--red);
+    color: var(--red);
+    border-radius: 15px;
+    width: 150px;
+    height: 60px;
+    transition: all .3s ease;
+}
+.form-footer {
+    z-index: 1;
+    width: 100%;
+    height: 150px;
+}
 .link-shadow {
     top: 0;
     left: 0;

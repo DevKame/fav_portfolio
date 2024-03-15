@@ -1,5 +1,5 @@
 <template>
-    <h1 class="section-headlines" :class="{smaller: smaller}">{{ props.headline }}</h1>
+    <h1 class="section-headlines me-auto" :class="{smaller: smaller}">{{ props.headline }}</h1>
 </template>
 
 <script lang="ts" setup>
@@ -13,7 +13,6 @@ const props = defineProps([
 <style scoped>
     h1.section-headlines {
         font-weight: bold;
-        width: 100%;
         text-align: left;
         color: var(--prim-weak);
         pointer-events: none;
@@ -44,16 +43,13 @@ const props = defineProps([
         h1.section-headlines {
             font-size: 150px;
         }
-        h1.section-headlines.smaller {
-            margin-left: 40px;
-        }
     }
     @media screen and (min-width: 992px) {
         h1.section-headlines {
             font-size: 200px;
         }
         h1.section-headlines.smaller {
-            margin-left: 60px;
+            margin-left: 30px;
         }
     }
     @media screen and (min-width: 1200px) {
@@ -61,7 +57,7 @@ const props = defineProps([
             font-size: 180px;
         }
         h1.section-headlines.smaller {
-            margin-left: 80px;
+            margin-left: 40px;
         }
     }
     @media screen and (min-width: 1400px) {
@@ -69,7 +65,7 @@ const props = defineProps([
             font-size: 250px;
         }
         h1.section-headlines.smaller {
-            margin-left: 100px;
+            margin-left: 50px;
         }
     }
 </style>
