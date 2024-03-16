@@ -38,15 +38,24 @@
                         <div class="border-wrapper d-flex flex-column justify-content-center align-items-center">
                             <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
                                 <label for="msgFirstname">{{ dataLabelFirstname }}</label>
-                                <input type="text" id="msgFirstname" name="msgFirstname" class="rounded-3 ps-2 py-1">
+                                <input @input="showUserInputs" type="text" id="msgFirstname" name="msgFirstname" class="rounded-3 ps-2 py-1" v-model="user_inputs.firstname">
+                                <div class="error-holder mt-1 overflow-hidden border border-info">
+
+                                </div>
                             </div>
                             <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
                                 <label for="msgLastname">{{ dataLabelLastname }}</label>
-                                <input type="text" id="msgLastname" name="msgLastname" class="rounded-3 ps-2 py-1">
+                                <input @input="showUserInputs" type="text" id="msgLastname" name="msgLastname" class="rounded-3 ps-2 py-1" v-model="user_inputs.lastname">
+                                <div class="error-holder mt-1 overflow-hidden border border-info">
+
+                                </div>
                             </div>
                             <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
                                 <label for="msgE-Mail">E-Mail</label>
-                                <input type="email" id="msEmail" name="msEmail" class="rounded-3 ps-2 py-1">
+                                <input @input="showUserInputs" type="email" id="msEmail" name="msEmail" class="rounded-3 ps-2 py-1" v-model="user_inputs.email">
+                                <div class="error-holder mt-1 overflow-hidden border border-info">
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -55,8 +64,11 @@
                         <h4 class="me-auto">{{ msgDesc }}</h4>
                         <div class="border-wrapper d-flex flex-column justify-content-center align-items-center">
                             <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
-                                <span class="char-counter">113 / 512</span>
-                                <textarea id="msgText" name="msgText" class="rounded-3 ps-2 py-1"></textarea>
+                                <span :class="{too_many_chars: tooManyChars}" class="char-counter">{{ totalChars }} / 512</span>
+                                <textarea  @input="showUserInputs" id="msgText" name="msgText" class="rounded-3 ps-2 py-1" v-model="user_inputs.message"></textarea>
+                                <div class="error-holder mt-1 overflow-hidden border border-info">
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -81,7 +93,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, reactive } from 'vue';
+
+interface Userinputs {
+    lang: string;
+    reason: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+    message: string;
+    hasdomain: string;
+    haswebspace: string;
+    privacy: boolean;
+}
+
+const user_inputs = reactive<Userinputs>({
+    // "ger" | "eng"
+    lang: "",
+    // "website" | "general"
+    reason: "",
+    firstname: "",
+    lastname: "",
+    email: "",
+    message: "",
+    // "yes" | "no" | "unsure"
+    hasdomain: "",
+    // "yes" | "no" | "unsure"
+    haswebspace: "",
+    privacy: false,
+});
 
 // SHOWS "SUBMIT" ONLY AT THE END OF THE FORM, OTHERWISE SHOWS "NEXT"
 const readyToSubmit = ref(false);
@@ -143,7 +183,11 @@ function setLanguage(lg: string): void {
     lang.value = lg;
     currentForm.value = "REASON";
     showFooter.value = true;
+    user_inputs.lang = lang.value;
+    console.clear();
+    console.table(user_inputs);
 }
+// ENG/GER EXPRESSIONS FOR FOOTER BUTTONS
 const footerResetBtn = computed(() => {
     return lang.value === "none" ?
     "RESET" : lang.value === "eng" ?
@@ -171,6 +215,7 @@ const footerSubmitBtn = computed(() => {
     }
     return word!;
 });
+// SETS THE REASON FOR MESSAGE AND CONTINUES TO DATA-WINDOW
 function setReason(val: string): void {
     showSubmit.value = true;
     switch(val) {
@@ -179,6 +224,9 @@ function setReason(val: string): void {
         case "general":
             break;
     }
+    user_inputs.reason = val;
+    console.clear();
+    console.table(user_inputs);
     currentForm.value = "DATA";
 }
 // RESETS FORM FOR MESSAGING, JUST LEAVES LANGUAGE SETTING AS CHOSEN
@@ -189,20 +237,28 @@ function resetMessage(): void {
 }
 // CALLBACK FOR CLICKING "BACK" IN MESSAGE FORM
 function messageBack(): void {
-    showSubmit.value = false;
     switch(currentForm.value) {
         case "REASON":
             currentForm.value = "LANGUAGE";
             showFooter.value = false;
+            showSubmit.value = false;
+            user_inputs.reason = "";
             break;
         case "DATA":
             currentForm.value = "REASON";
+            showSubmit.value = false;
+            user_inputs.firstname = "";
+            user_inputs.lastname = "";
+            user_inputs.email = "";
             break;
         case "MESSAGE":
             currentForm.value = "DATA";
+            user_inputs.message = "";
             break;
     }
+    showUserInputs();
 }
+// ENG/GER EXPRESSIONS FOR USER DATA INPUT LABELS
 const dataLabelFirstname = computed(() => {
     return lang.value === "none" ?
     "Firstname" : lang.value === "eng" ?
@@ -213,18 +269,38 @@ const dataLabelLastname = computed(() => {
     "Lastname" : lang.value === "eng" ?
     "Lastname" : "Nachname";
 });
+// HANDLES WHAT HAPPENS ON CLICKING "NEXT"/"SUBMIT" DEPENDING ON currentForm
 function nextSubmit(): void {
-    //TODO: Zwischen den einzelnen Steps muss validierung hin
+    //TODO: Zwischen den einzelnen Steps muss Validierung hin
     switch(currentForm.value) {
         case "DATA":
             currentForm.value = "MESSAGE";
             break;
     }
 }
+// COUNTS THE AMOUNT OF CHARACTERS IN <textarea>
+const totalChars = computed(() => {
+    return user_inputs.message.length;
+});
+// RETURNS TRUE/FALSE IF <textarea> HAS MORE THAN 512 CHARS
+const tooManyChars = computed(() => {
+    return totalChars.value > 512;
+});
+function showUserInputs(): void {
+    console.clear();
+    console.table(user_inputs);
+}
 
 </script>
 
 <style scoped>
+.error-holder {
+    width: 100%;
+    height: 40px;
+}
+.too_many_chars {
+    color: var(--red);
+}
 .input-holder textarea {
     height: 250px;
     resize: none;
