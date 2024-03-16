@@ -163,8 +163,8 @@ const botrighticon = computed(() => {
                         <div v-if="workTopButton === 'port'" class="info-holder d-flex flex-column justify-content-start align-items-start">
                             <h3>MY PORTFOLIO</h3>
                             <p>You just came across the perfect place to checkout  the code of this particular webiste.</p>
-                            <p>Browse across my reference porjects and inspect their tech stack. If you have questions, send me a message at the bottom of this site.</p>
-                            <p>Learn about my current work and what applications i already build. Feel free to use every functionality they offer!</p>
+                            <p>Browse across my reference projects and inspect their tech stack. If you have questions, send me a message at the bottom of this site.</p>
+                            <p>Learn about my current work and what applications i already built. Feel free to use every functionality they offer!</p>
                         </div>
                         <div v-else-if="workTopButton === 'sport'" class="info-holder d-flex flex-column justify-content-start align-items-start">
                             <h3>CALENDAR</h3>
