@@ -36,10 +36,71 @@ if($_SERVER["REQUEST_METHOD"] === "POST")
                 $res["reason"] = "invalid-entries";
                 $res["success"] = false;
             }
+            if(isRecentEntry($req->email)) {
+                $res["reason"] = "too-soon";
+                $res["success"] = false;
+            }
+            break;
+        case "validate-message":
+            if(strlen($req->message) > 512 || trim($req->message) === "") {
+                $res["reason"] = "invalid-message";
+                $res["success"] = false;
+            }
+            break;
+        case "safe-request":
+            if($req->userdata->reason === "website")
+            {
+                if($req->userdata->hasdomain === "" || $req->userdata->haswebspace === "")
+                {
+                    $res["reason"] = "radios-empty";
+                    $res["success"] = false;
+                }
+                else {
+                    safeRequest($req->userdata);
+                }
+            }
+            else {
+                safeRequest($req->userdata);
+            }
             break;
     }
 }
 
+function connect() {
+    $host =     "localhost";
+    $user =     "Kamedin";
+    $pw =       "12345";
+    $db =       "kame-utilities";
+    return mysqli_connect($host, $user, $pw, $db);
+}
+function safeRequest($data) {
+    $con = connect();
+    $privacy = $data->privacy === true ?
+    1 : 0;
+    $timestamp = (string)time();
+    $query =
+    "INSERT INTO requests_to_me
+    (firstname, lastname, email, privacy, message, hasdomain, haswebspace, timestamp)
+    VALUES (?,?,?,?,?,?,?,?)";
+    $stmt = mysqli_prepare($con, $query);
+    mysqli_stmt_bind_param($stmt, "sssissss", $data->firstname, $data->lastname, $data->email, $privacy, $data->message, $data->hasdomain, $data->haswebspace, $timestamp);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    mysqli_close($con);
+}
+function isRecentEntry($email) {
+    $con = connect();
+    $twelveHoursAgo = time() - (12 * 60 * 60);
+    $query = "SELECT timestamp FROM requests_to_me WHERE email = ? ORDER BY timestamp DESC LIMIT 1";
+    $stmt = mysqli_prepare($con, $query);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $latestTimestamp);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+
+    return ($latestTimestamp && $latestTimestamp > $twelveHoursAgo);
+}
 
 $res = json_encode($res);
 echo $res;

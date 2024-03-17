@@ -4,128 +4,151 @@
             <div class="background-image px-2 px-sm-4 px-xl-5">
                 <div class="message-wrapper p-3 container position-relative d-flex flex-column justify-content-start align-items-center">
                     <h1 class="me-auto position-relative">{{ msgTitle }}</h1>
+                    <transition name="message-blocks" mode="out-in">
+                        <div v-if="currentForm ==='LANGUAGE'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
+                            <h4 class="me-auto">{{ msgDesc }}</h4>
+                            <div class="border-wrapper d-flex justify-content-center align-items-center">
+                                <button @click="setLanguage('eng')" class="prim-btn lang-btn me-4 position-relative">
+                                    ENGLISH
+                                    <div class="link-shadow position-absolute"></div>
+                                </button>
+                                <button @click="setLanguage('ger')" class="prim-btn lang-btn ms-4 position-relative">
+                                    DEUTSCH
+                                    <div class="link-shadow position-absolute"></div>
+                                </button>
+                            </div>
+                        </div>
 
-                    <div v-if="currentForm ==='LANGUAGE'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
-                        <h4 class="me-auto">{{ msgDesc }}</h4>
-                        <div class="border-wrapper d-flex justify-content-center align-items-center">
-                            <button @click="setLanguage('eng')" class="prim-btn lang-btn me-4 position-relative">
-                                ENGLISH
-                                <div class="link-shadow position-absolute"></div>
-                            </button>
-                            <button @click="setLanguage('ger')" class="prim-btn lang-btn ms-4 position-relative">
-                                DEUTSCH
-                                <div class="link-shadow position-absolute"></div>
-                            </button>
+                        <div v-else-if="currentForm ==='REASON'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
+                            <h4 class="me-auto">{{ msgDesc }}</h4>
+                            <div class="border-wrapper d-flex flex-column justify-content-center align-items-center">
+                                <button @click="setReason('website')" class="prim-btn type-btn my-3 position-relative">
+                                    {{ msgWebsiteQ }}
+                                    <div class="link-shadow position-absolute"></div>
+                                </button>
+                                <button @click="setReason('general')" class="prim-btn type-btn my-3 position-relative">
+                                    {{ msgGeneralQ }}
+                                    <div class="link-shadow position-absolute"></div>
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div v-if="currentForm ==='REASON'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
-                        <h4 class="me-auto">{{ msgDesc }}</h4>
-                        <div class="border-wrapper d-flex flex-column justify-content-center align-items-center">
-                            <button @click="setReason('website')" class="prim-btn type-btn my-3 position-relative">
-                                {{ msgWebsiteQ }}
-                                <div class="link-shadow position-absolute"></div>
-                            </button>
-                            <button @click="setReason('general')" class="prim-btn type-btn my-3 position-relative">
-                                {{ msgGeneralQ }}
-                                <div class="link-shadow position-absolute"></div>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div v-if="currentForm ==='DATA'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
-                        <h4 class="me-auto">{{ msgDesc }}</h4>
-                        <div class="border-wrapper d-flex flex-column justify-content-center align-items-center">
-                            <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
-                                <label for="msgFirstname">{{ dataLabelFirstname }}</label>
-                                <input @input="showUserInputs" type="text" id="msgFirstname" name="msgFirstname" class="rounded-3 ps-2 py-1" maxlength="15" v-model="user_inputs.firstname">
-                            </div>
-                            <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
-                                <label for="msgLastname">{{ dataLabelLastname }}</label>
-                                <input @input="showUserInputs" type="text" id="msgLastname" name="msgLastname" class="rounded-3 ps-2 py-1" maxlength="15" v-model="user_inputs.lastname">
-                            </div>
-                            <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
-                                <label for="msgEmail">{{ dataLabelEmail }}</label>
-                                <input @input="showUserInputs" type="email" id="msgEmail" name="msgEmail" class="rounded-3 ps-2 py-1" maxlength="30" v-model="user_inputs.email">
-                            </div>
-                            <div class="input-holder my-2 border border-danger d-flex justify-content-start align-items-center">
-                                <input @input="togglePrivacy" type="checkbox" id="msgPrivacy" name="msgPrivacy" class="position-relative" ref="privacyCheckbox">
-                                <label for="msgPrivacy" class="ms-3">I have read and accept the <a href="#">privacy policy</a></label>
-                            </div>
-                            <div class="error-holder mt-1 overflow-hidden d-flex justify-content-center align-items-center border border-info">
-                                <transition name="err" mode="out-in">
-                                    <div v-if="err_invalidUserdata" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
-                                        <p class="m-0">{{ userdataerrormsg }}</p>
-                                    </div>
-                                    <div v-else-if="err_invalidUseremail" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
-                                        <p class="m-0">{{ useremailerrormsg }}</p>
-                                    </div>
-                                    <div v-else-if="err_privacy" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
-                                        <p class="m-0">{{ privacyerrormsg }}</p>
-                                    </div>
-                                </transition>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div v-if="currentForm ==='MESSAGE'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
-                        <h4 class="me-auto">{{ msgDesc }}</h4>
-                        <div class="border-wrapper d-flex flex-column justify-content-center align-items-center">
-                            <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
-                                <span :class="{too_many_chars: tooManyChars}" class="char-counter">{{ totalChars }} / 512</span>
-                                <textarea  @input="showUserInputs" id="msgText" name="msgText" class="rounded-3 ps-2 py-1" v-model="user_inputs.message"></textarea>
-                            </div>
-                            <div class="error-holder mt-1 overflow-hidden border border-info">
-                                <transition name="err" mode="out-in">
-                                    <div v-if="err_invalidUsertext" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
-                                        <p class="m-0">{{ usertexterrormsg }}</p>
-                                    </div>
-                                </transition>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div v-if="currentForm ==='WEBSITEINFO'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
-                        <h4 class="me-auto">{{ msgDesc }}</h4>
-                        <div class="border-wrapper d-flex flex-column justify-content-center align-items-center">
-                            <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
-                                <p>{{ domainHeadline }}</p>
-                                <div class="w-100 d-flex justify-content-around align-items-center">
-                                    <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
-                                        <input type="radio" name="domain" id="domainyes" value="yes">
-                                        <label class="radio-label" for="domainyes">{{ yes }}</label>
-                                    </div>
-                                    <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
-                                        <input type="radio" name="domain" id="domainno" value="no">
-                                        <label class="radio-label" for="domainno">{{ no }}</label>
-                                    </div>
-                                    <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
-                                        <input type="radio" name="domain" id="domainunsure" value="unsure">
-                                        <label class="radio-label" for="domainunsure">{{ unsure }}</label>
-                                    </div>
+                        <div v-else-if="currentForm ==='DATA'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
+                            <h4 class="me-auto">{{ msgDesc }}</h4>
+                            <div class="border-wrapper d-flex flex-column justify-content-center align-items-center">
+                                <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
+                                    <label for="msgFirstname">{{ dataLabelFirstname }}</label>
+                                    <input type="text" id="msgFirstname" name="msgFirstname" class="rounded-3 ps-2 py-1" maxlength="15" v-model="user_inputs.firstname">
                                 </div>
-                            </div><div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
-                                <p>{{ webspaceHeadline }}</p>
-                                <div class="w-100 d-flex justify-content-around align-items-center">
-                                    <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
-                                        <input type="radio" name="webspace" id="webspaceyes" value="yes">
-                                        <label class="radio-label" for="webspaceyes">{{ yes }}</label>
-                                    </div>
-                                    <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
-                                        <input type="radio" name="webspace" id="webspaceno" value="no">
-                                        <label class="radio-label" for="webspaceno">{{ no }}</label>
-                                    </div>
-                                    <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
-                                        <input type="radio" name="webspace" id="webspaceunsure" value="unsure">
-                                        <label class="radio-label" for="webspaceunsure">{{ unsure }}</label>
-                                    </div>
+                                <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
+                                    <label for="msgLastname">{{ dataLabelLastname }}</label>
+                                    <input type="text" id="msgLastname" name="msgLastname" class="rounded-3 ps-2 py-1" maxlength="15" v-model="user_inputs.lastname">
+                                </div>
+                                <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
+                                    <label for="msgEmail">{{ dataLabelEmail }}</label>
+                                    <input type="email" id="msgEmail" name="msgEmail" class="rounded-3 ps-2 py-1" maxlength="30" v-model="user_inputs.email">
+                                </div>
+                                <div class="input-holder my-2 border border-danger d-flex justify-content-start align-items-center">
+                                    <input @input="togglePrivacy" type="checkbox" id="msgPrivacy" name="msgPrivacy" class="position-relative" ref="privacyCheckbox">
+                                    <label for="msgPrivacy" class="ms-3">I have read and accept the <a href="#">privacy policy</a></label>
+                                </div>
+                                <div class="error-holder mt-1 overflow-hidden d-flex justify-content-center align-items-center border border-info">
+                                    <transition name="err" mode="out-in">
+                                        <div v-if="err_invalidUserdata" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
+                                            <p class="m-0">{{ userdataerrormsg }}</p>
+                                        </div>
+                                        <div v-else-if="err_invalidUseremail" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
+                                            <p class="m-0">{{ useremailerrormsg }}</p>
+                                        </div>
+                                        <div v-else-if="err_privacy" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
+                                            <p class="m-0">{{ privacyerrormsg }}</p>
+                                        </div>
+                                        <div v-else-if="err_connection" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
+                                            <p class="m-0">{{ connectionerrormsg }}</p>
+                                        </div>
+                                        <div v-else-if="err_too_soon" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
+                                            <p class="m-0">{{ toosoonmsg }}</p>
+                                        </div>
+                                    </transition>
                                 </div>
                             </div>
-                            <div class="error-holder mt-1 overflow-hidden border border-info">
-
+                        </div>
+                        
+                        <div v-else-if="currentForm ==='MESSAGE'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
+                            <h4 class="me-auto">{{ msgDesc }}</h4>
+                            <div class="border-wrapper d-flex flex-column justify-content-center align-items-center">
+                                <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
+                                    <span :class="{too_many_chars: tooManyChars}" class="char-counter">{{ totalChars }} / 512</span>
+                                    <textarea id="msgText" name="msgText" class="rounded-3 ps-2 py-1" v-model="user_inputs.message"></textarea>
+                                </div>
+                                <div class="error-holder mt-1 overflow-hidden border border-info">
+                                    <transition name="err" mode="out-in">
+                                        <div v-if="err_invalidUsertext" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
+                                            <p class="m-0">{{ usertexterrormsg }}</p>
+                                        </div>
+                                        <div v-else-if="err_connection" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
+                                            <p class="m-0">{{ connectionerrormsg }}</p>
+                                        </div>
+                                    </transition>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        
+                        <div v-else-if="currentForm ==='WEBSITEINFO'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
+                            <h4 class="me-auto">{{ msgDesc }}</h4>
+                            <div class="border-wrapper d-flex flex-column justify-content-center align-items-center">
+                                <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
+                                    <p>{{ domainHeadline }}</p>
+                                    <div class="w-100 d-flex justify-content-around align-items-center">
+                                        <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
+                                            <input @input="setDomainInfo" type="radio" name="domain" id="domainyes" value="yes">
+                                            <label class="radio-label" for="domainyes">{{ yes }}</label>
+                                        </div>
+                                        <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
+                                            <input @input="setDomainInfo" type="radio" name="domain" id="domainno" value="no">
+                                            <label class="radio-label" for="domainno">{{ no }}</label>
+                                        </div>
+                                        <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
+                                            <input @input="setDomainInfo" type="radio" name="domain" id="domainunsure" value="unsure">
+                                            <label class="radio-label" for="domainunsure">{{ unsure }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
+                                    <p>{{ webspaceHeadline }}</p>
+                                    <div class="w-100 d-flex justify-content-around align-items-center">
+                                        <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
+                                            <input @input="setWebspaceInfo" type="radio" name="webspace" id="webspaceyes" value="yes">
+                                            <label class="radio-label" for="webspaceyes">{{ yes }}</label>
+                                        </div>
+                                        <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
+                                            <input @input="setWebspaceInfo" type="radio" name="webspace" id="webspaceno" value="no">
+                                            <label class="radio-label" for="webspaceno">{{ no }}</label>
+                                        </div>
+                                        <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
+                                            <input @input="setWebspaceInfo" type="radio" name="webspace" id="webspaceunsure" value="unsure">
+                                            <label class="radio-label" for="webspaceunsure">{{ unsure }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="error-holder mt-1 overflow-hidden border border-info">
+                                    <transition name="err" mode="out-in">
+                                        <div v-if="err_radios" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
+                                            <p class="m-0">{{ radioerrormsg }}</p>
+                                        </div>
+                                        <div v-else-if="err_connection" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
+                                            <p class="m-0">{{ connectionerrormsg }}</p>
+                                        </div>
+                                    </transition>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div v-else-if="currentForm ==='FINISHED'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
+                            <h4 class="me-auto">{{ msgDesc }}</h4>
+                            <p class="my-auto">{{ messageDone }}</p>
+                        </div>
+                    </transition>
 
                     <div class="form-footer d-flex justify-content-start align-items-center">
                         <button v-if="showFooter" @click="resetMessage" class="red-btn d-flex justify-content-center align-items-center position-relative overflow-hidden">
@@ -136,10 +159,12 @@
                             {{ footerBackBtn }}
                             <div class="link-shadow position-absolute"></div>
                         </button>
-                        <button v-if="showSubmit" @click="nextSubmit" class="prim-btn submit-btn ms-auto d-flex justify-content-center align-items-center position-relative overflow-hidden">
-                            <p class="m-0">{{ footerSubmitBtn }}</p>
-                            <div class="link-shadow position-absolute"></div>
-                        </button>
+                        <transition name="sbtn">
+                            <button v-if="showSubmit" @click="nextSubmit" class="prim-btn submit-btn ms-auto d-flex justify-content-center align-items-center position-relative overflow-hidden">
+                                <p class="m-0">{{ footerSubmitBtn }}</p>
+                                <div class="link-shadow position-absolute"></div>
+                            </button>
+                        </transition>
                     </div>
                 </div>
             </div>
@@ -182,53 +207,115 @@ async function nextSubmit() {
     resetErrors();
     switch(currentForm.value) {
         case "DATA": {
-            const response = await fetch("http://localhost/Eskamedin/fav_portfolio/vue_app/public/backend/server.php", {
-                method: "post",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({task: "validate-data", firstname: user_inputs.firstname, lastname: user_inputs.lastname, email: user_inputs.email}),
-            });
-            const data = await response.json();
-            console.log(data);
-            if(!data.success) {
-                switch(data.reason) {
-                    case "too-long":
-                        err_invalidUserdata.value = true;
-                        break;
-                    case "invalid-entries":
-                        err_invalidUserdata.value = true;
-                        break;
-                    case "invalid-email":
-                        err_invalidUseremail.value = true;
-                        break;
-                }
-            }
-            else {
-                if(!user_inputs.privacy) {
-                    err_privacy.value = true;
-                }
-                else {
-                    resetErrors();
-                    currentForm.value = "MESSAGE";
-                    if(user_inputs.reason === "general") {
-                        readyToSubmit.value = true;
+            try {
+                const response = await fetch("http://localhost/Eskamedin/fav_portfolio/vue_app/public/backend/server.php", {
+                    method: "post",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({task: "validate-data", firstname: user_inputs.firstname, lastname: user_inputs.lastname, email: user_inputs.email}),
+                });
+                const data = await response.json();
+                if(!data.success) {
+                    switch(data.reason) {
+                        case "too-long":
+                            err_invalidUserdata.value = true;
+                            break;
+                        case "invalid-entries":
+                            err_invalidUserdata.value = true;
+                            break;
+                        case "invalid-email":
+                            err_invalidUseremail.value = true;
+                            break;
+                        case "too-soon":
+                            err_too_soon.value = true;
+                            break;
                     }
                 }
+                else {
+                    if(!user_inputs.privacy) {
+                        err_privacy.value = true;
+                    }
+                    else {
+                        resetErrors();
+                        currentForm.value = "MESSAGE";
+                        if(user_inputs.reason === "general") {
+                            readyToSubmit.value = true;
+                        }
+                    }
+                }
+            }
+            catch {
+                err_connection.value = true;
             }
             break;
         }
         case "MESSAGE":
-            console.clear();
-            console.table(user_inputs);
-            if(user_inputs.reason === "website") {
-                currentForm.value = "WEBSITEINFO";
-                readyToSubmit.value = true;
+            try {
+                const response = await fetch("http://localhost/Eskamedin/fav_portfolio/vue_app/public/backend/server.php", {
+                    method: "post",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({task: "validate-message", message: user_inputs.message}),
+                });
+                const data = await response.json();
+                if(!data.success) {
+                    err_invalidUsertext.value = true;
+                }
+                else {
+                    if(user_inputs.reason === "website") {
+                        currentForm.value = "WEBSITEINFO";
+                        readyToSubmit.value = true;
+                    }
+                    else {
+                        finishMessage();
+                        currentForm.value = "FINISHED";
+                        showFooter.value = false;
+                        showSubmit.value = false;
+                        readyToSubmit.value = false;
+                    }
+                }
+            }
+            catch(error) {
+                err_connection.value = true;
+            }
+            break;
+        case "WEBSITEINFO":
+            try {
+                const response = await fetch("http://localhost/Eskamedin/fav_portfolio/vue_app/public/backend/server.php", {
+                    method: "post",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({task: "safe-request", userdata: user_inputs}),
+                });
+                const data = await response.json();
+                if(!data.success) {
+                    err_radios.value = true;
+                }
+                else {
+                    currentForm.value = "FINISHED";
+                    showFooter.value = false;
+                    showSubmit.value = false;
+                    readyToSubmit.value = false;
+                }
+            }
+            catch(error) {
+                err_connection.value = true;
             }
             break;
     }
 }
 function togglePrivacy(): void {
     user_inputs.privacy = !user_inputs.privacy;
-    showUserInputs();
+}
+async function finishMessage() {
+    try {
+        const response = await fetch("http://localhost/Eskamedin/fav_portfolio/vue_app/public/backend/server.php", {
+            method: "post",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({task: "safe-request", userdata: user_inputs}),
+        });
+        const data = await response.json();
+    }
+    catch {
+        err_connection.value = true;
+    }
 }
 
 // SHOWS "SUBMIT" ONLY AT THE END OF THE FORM, OTHERWISE SHOWS "NEXT"
@@ -276,6 +363,11 @@ const msgDesc = computed(() => {
             "Additional info regarding websites" : lang.value === "eng" ?
             "Additional info regarding websites" : "Zusatzinfos bezüglich Websites";
             break;
+        case "FINISHED":
+            result = lang.value === "none" ?
+            "Request has beend sent!" : lang.value === "eng" ?
+            "Request has beend sent!" : "Nachricht wurde gesendet!";
+            break;
     }
     return result!;
 });
@@ -297,8 +389,6 @@ function setLanguage(lg: string): void {
     currentForm.value = "REASON";
     showFooter.value = true;
     user_inputs.lang = lang.value;
-    console.clear();
-    console.table(user_inputs);
 }
 // ENG/GER EXPRESSIONS FOR FOOTER BUTTONS
 const footerResetBtn = computed(() => {
@@ -332,15 +422,23 @@ const footerSubmitBtn = computed(() => {
 function setReason(val: string): void {
     showSubmit.value = true;
     user_inputs.reason = val;
-    console.clear();
-    console.table(user_inputs);
     currentForm.value = "DATA";
 }
 // RESETS FORM FOR MESSAGING, JUST LEAVES LANGUAGE SETTING AS CHOSEN
 function resetMessage(): void {
     showFooter.value = false;
     showSubmit.value = false;
+    readyToSubmit.value = false;
     currentForm.value = "LANGUAGE";
+    user_inputs.lang = "";
+    user_inputs.reason = "";
+    user_inputs.firstname = "";
+    user_inputs.lastname = "";
+    user_inputs.email = "";
+    user_inputs.message = "";
+    user_inputs.hasdomain = "";
+    user_inputs.haswebspace = "";
+    user_inputs.privacy = false;
 }
 // CALLBACK FOR CLICKING "BACK" IN MESSAGE FORM
 function messageBack(): void {
@@ -365,8 +463,13 @@ function messageBack(): void {
             user_inputs.message = "";
             user_inputs.privacy = false;
             break;
+        case "WEBSITEINFO":
+            currentForm.value = "MESSAGE";
+            readyToSubmit.value = false;
+            user_inputs.hasdomain = "";
+            user_inputs.haswebspace = "";
+            break;
     }
-    showUserInputs();
 }
 // ENG/GER EXPRESSIONS FOR USER DATA INPUT LABELS
 const dataLabelFirstname = computed(() => {
@@ -392,10 +495,6 @@ const totalChars = computed(() => {
 const tooManyChars = computed(() => {
     return totalChars.value > 512;
 });
-function showUserInputs(): void {
-    console.clear();
-    console.table(user_inputs);
-}
 const domainHeadline = computed(() => {
     return lang.value === "none" ?
     "I already have a domain" : lang.value === "eng" ?
@@ -446,15 +545,83 @@ const usertexterrormsg = computed(() => {
     "Enter non-empty values below 512 characters" : lang.value === "eng" ?
     "Enter non-empty values below 512 characters" : "Trage bitte Text ein, kürzer als 512 Zeichen";
 });
+const connectionerrormsg = computed(() => {
+    return lang.value === "none" ?
+    "Something unexpected went wrong. Try again later." : lang.value === "eng" ?
+    "Something unexpected went wrong. Try again later." : "Ein unerwarteter Fehler trat auf. Versuche es später.";
+});
+const err_connection = ref(false);
+const messageDone = computed(() => {
+    return lang.value === "none" ?
+    "Thank you for your message. Keep an eye on your inbox. Give me a little time, an answer will not come later than 7 days!" : lang.value === "eng" ?
+    "Thank you for your message. Keep an eye on your inbox. Give me a little time, an answer will not come later than 7 days!" : "Nachricht wurde gesendet. Halte Ausschau in deinem Posteingang oder Spam. Meine Antwort wird nicht länger als 7 Tage dauern.";
+});
+const err_too_soon = ref(false);
+const toosoonmsg = computed(() => {
+    return lang.value === "none" ?
+    "The last message with this email was submitted less than 12 hours ago." : lang.value === "eng" ?
+    "The last message with this email was submitted less than 12 hours ago." : "Die letzte Nachricht mit dieser Emailadresse kam vor weniger als 12 Stunden.";
+});
+const err_radios = ref(false);
+const radioerrormsg = computed(() => {
+    return lang.value === "none" ?
+    "You need to choose an option for both points" : lang.value === "eng" ?
+    "You need to choose an option for both points" : "Bitte wähle eine aus den obigen Optionen";
+})
 function resetErrors(): void {
     err_invalidUserdata.value = false;
     err_invalidUseremail.value = false;
     err_privacy.value = false;
     err_invalidUsertext.value = false;
+    err_connection.value = false;
+}
+function setDomainInfo(e: Event): void {
+    const radio = e.target as HTMLInputElement;
+    user_inputs.hasdomain = radio.value;
+}
+function setWebspaceInfo(e: Event): void {
+    const radio = e.target as HTMLInputElement;
+    user_inputs.haswebspace = radio.value;
 }
 </script>
 
 <style scoped>
+.sbtn-enter-active {
+    animation: sbtn-move .5s linear 1 forwards;
+}
+.sbtn-leave-active {
+    animation: sbtn-move .5s linear 1 reverse forwards;
+}
+@keyframes sbtn-move {
+    0% {
+        opacity: 0;
+        transform: translate(0, 800%);
+    }
+    70% {
+        oapcity: 1;
+        transform: translate(0, -30%);
+    }
+    85% {
+        transform: translate(0, 10%);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+.message-blocks-enter-from,
+.message-blocks-leave-to {
+    opacity: 0;
+    transform:  translate(0, 30%) scale(.8);
+}
+.message-blocks-enter-active,
+.message-blocks-leave-active {
+    transition: all .3s ease;
+}
+.message-blocks-enter-to,
+.message-blocks-leave-from {
+    opacity: 1;
+    transform:  translate(0, 0) scale(1);
+}
 .err-enter-from,
 .err-leave-to {
     transform: translate(0, 50%) scale(.8);
