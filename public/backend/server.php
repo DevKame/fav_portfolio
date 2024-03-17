@@ -80,10 +80,10 @@ function safeRequest($data) {
     $timestamp = (string)time();
     $query =
     "INSERT INTO requests_to_me
-    (firstname, lastname, email, privacy, message, hasdomain, haswebspace, timestamp)
-    VALUES (?,?,?,?,?,?,?,?)";
+    (firstname, lastname, email, privacy, message, hasdomain, haswebspace, timestamp, language, reason)
+    VALUES (?,?,?,?,?,?,?,?,?,?)";
     $stmt = mysqli_prepare($con, $query);
-    mysqli_stmt_bind_param($stmt, "sssissss", $data->firstname, $data->lastname, $data->email, $privacy, $data->message, $data->hasdomain, $data->haswebspace, $timestamp);
+    mysqli_stmt_bind_param($stmt, "sssissssss", $data->firstname, $data->lastname, $data->email, $privacy, $data->message, $data->hasdomain, $data->haswebspace, $timestamp, $data->lang, $data->reason);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     mysqli_close($con);
