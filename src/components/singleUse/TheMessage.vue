@@ -150,22 +150,24 @@
                         </div>
                     </transition>
 
-                    <div class="form-footer d-flex justify-content-start align-items-center">
-                        <button v-if="showFooter" @click="resetMessage" class="red-btn d-flex justify-content-center align-items-center position-relative overflow-hidden">
-                            {{ footerResetBtn }}
-                            <div class="link-shadow position-absolute"></div>
-                        </button>
-                        <button v-if="showFooter" @click="messageBack" class="red-btn ms-3 d-flex justify-content-center align-items-center position-relative overflow-hidden">
-                            {{ footerBackBtn }}
-                            <div class="link-shadow position-absolute"></div>
-                        </button>
-                        <transition name="sbtn">
-                            <button v-if="showSubmit" @click="nextSubmit" class="prim-btn submit-btn ms-auto d-flex justify-content-center align-items-center position-relative overflow-hidden">
-                                <p class="m-0">{{ footerSubmitBtn }}</p>
+                    <transition name="footer">
+                        <div v-if="showFooter" class="form-footer d-flex justify-content-start align-items-center">
+                            <button @click="resetMessage" class="red-btn d-flex justify-content-center align-items-center position-relative overflow-hidden">
+                                {{ footerResetBtn }}
                                 <div class="link-shadow position-absolute"></div>
                             </button>
-                        </transition>
-                    </div>
+                            <button @click="messageBack" class="red-btn ms-3 d-flex justify-content-center align-items-center position-relative overflow-hidden">
+                                {{ footerBackBtn }}
+                                <div class="link-shadow position-absolute"></div>
+                            </button>
+                            <transition name="sbtn">
+                                <button v-if="showSubmit" @click="nextSubmit" class="prim-btn submit-btn ms-auto d-flex justify-content-center align-items-center position-relative overflow-hidden">
+                                    <p class="m-0">{{ footerSubmitBtn }}</p>
+                                    <div class="link-shadow position-absolute"></div>
+                                </button>
+                            </transition>
+                        </div>
+                    </transition>
                 </div>
             </div>
     </section>
@@ -586,11 +588,33 @@ function setWebspaceInfo(e: Event): void {
 </script>
 
 <style scoped>
+.footer-enter-active {
+    animation: footer-move .7s linear 1 forwards;
+}
+.footer-leave-active {
+    animation: footer-move .7s linear 1 reverse forwards;
+}
 .sbtn-enter-active {
     animation: sbtn-move .5s linear 1 forwards;
 }
 .sbtn-leave-active {
     animation: sbtn-move .5s linear 1 reverse forwards;
+}
+@keyframes footer-move {
+    0% {
+        opacity: 0;
+        transform: translate(50%, 0);
+    }
+    70% {
+        oapcity: 1;
+        transform: translate(-10%, 0);
+    }
+    85% {
+        transform: translate(5%, 0);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
 }
 @keyframes sbtn-move {
     0% {
