@@ -5,7 +5,6 @@
   <the-work></the-work>
   <the-stack></the-stack>
   <the-message></the-message>
-  <section class="space"></section>
 </template>
 
 <script lang="ts" setup>

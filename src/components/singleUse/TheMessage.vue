@@ -1,7 +1,7 @@
 <template>
     <section class="message d-flex flex-column justify-content-start align-items-center">
         <section-headline headline="MESSAGE" :smaller="true"></section-headline>
-            <div class="background-image px-2 px-sm-4 px-xl-5">
+            <div class="background-image px-2 px-sm-4 px-xl-5 d-flex justify-content-center align-items-center">
                 <div class="message-wrapper p-3 container position-relative d-flex flex-column justify-content-start align-items-center">
                     <h1 class="me-auto position-relative">{{ msgTitle }}</h1>
                     <transition name="message-blocks" mode="out-in">
@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="input-holder my-2  d-flex justify-content-start align-items-center">
                                     <input @input="togglePrivacy" type="checkbox" id="msgPrivacy" name="msgPrivacy" class="position-relative" ref="privacyCheckbox">
-                                    <label for="msgPrivacy" class="ms-3">I have read and accept the <a href="#">privacy policy</a></label>
+                                    <label for="msgPrivacy" class="ms-3">{{ privacyInfo }} <a @click="togglePrivacyInfo">{{ privacyLink }}</a></label>
                                 </div>
                                 <div class="error-holder mt-1 overflow-hidden d-flex justify-content-center align-items-center">
                                     <transition name="err" mode="out-in">
@@ -171,12 +171,24 @@
                     </transition>
                 </div>
             </div>
+            <teleport to="body">
+                <transition name="privacy-info">
+                    <div v-if="showPrivacy" @click.self="togglePrivacyInfo" class="privacy-backdrop position-fixed d-flex justify-content-center align-items-center">
+                        <div class="privacy-window px-4 bg-prim d-flex flex-column justify-content-start align-items-start rounded-2">
+                            <h3 class="mx-auto">What happens to your data?</h3>
+                            <p class="mt-auto">You can order to delete your saved data at any given time. Just send an email to <a href="mailto:website@kamed.in">website@kamed.in</a></p>
+                            <p>Otherwise your data will be stored until we are fully done with the issue of your request.</p>
+                            <p class="mb-auto">On inactivity your data will be deleted after 10 days.</p>
+                        </div>
+                    </div>
+                </transition>
+            </teleport>
     </section>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, reactive } from 'vue';
-
+// STURUCTUR OF COLLECTED USER SETTINGS FOR MESSAGE
 interface Userinputs {
     lang: string;
     reason: string;
@@ -188,7 +200,7 @@ interface Userinputs {
     haswebspace: string;
     privacy: boolean;
 }
-
+// POINTER FOR LOADING A SUBMITTED FORM
 const submitLoading = ref(false);
 const user_inputs = reactive<Userinputs>({
     // "ger" | "eng"
@@ -205,6 +217,12 @@ const user_inputs = reactive<Userinputs>({
     haswebspace: "",
     privacy: false,
 });
+// TOGGLES DISPLAY OF DETAILLED PRIVACY INFO
+function togglePrivacyInfo(): void {
+    showPrivacy.value = !showPrivacy.value;
+}
+// SHOWS DETAILLED INFO ABOUT PRIVACY POLICY
+const showPrivacy = ref(false);
 // HANDLES WHAT HAPPENS ON CLICKING "NEXT"/"SUBMIT" DEPENDING ON currentForm
 async function nextSubmit() {
     resetErrors();
@@ -304,9 +322,11 @@ async function nextSubmit() {
     }
     submitLoading.value = false;
 }
+// TOGGLES USER INPUTS SETTING ABOUT PRIVACY
 function togglePrivacy(): void {
     user_inputs.privacy = !user_inputs.privacy;
 }
+// CREATES AND SAVES THE REQUEST INTO THE DATABASE
 async function finishMessage() {
     try {
         const response = await fetch("http://localhost/Eskamedin/fav_portfolio/vue_app/public/backend/server.php", {
@@ -320,7 +340,7 @@ async function finishMessage() {
         err_connection.value = true;
     }
 }
-
+// DECIDES IF SUBMIT/NEXT BUTTON IS SHOWN OR NOT. JUST HAPPENS IF CURRENT FORM IS FILLED
 const showSubmit = computed(() => {
     let result: boolean;
     switch(currentForm.value) {
@@ -342,6 +362,17 @@ const showSubmit = computed(() => {
             break;
     }
     return result!;
+});
+// ENG/GER Inputelement for agreeing privacy policy
+const privacyInfo = computed(() => {
+    return lang.value === "none" ?
+    "I have read and accept the" : lang.value === "eng" ?
+    "I have read and accept the" : "Datenschutzinfo gelesen und zugestimmt.";
+});
+const privacyLink = computed(() => {
+    return lang.value === "none" ?
+    "privacy policy" : lang.value === "eng" ?
+    "privacy policy" : "Zur Info";
 });
 
 // SHOWS "SUBMIT" ONLY AT THE END OF THE FORM, OTHERWISE SHOWS "NEXT"
@@ -515,6 +546,7 @@ const totalChars = computed(() => {
 const tooManyChars = computed(() => {
     return totalChars.value > 512;
 });
+// ENG/GER EXPRESSIONS FOR WEBSITE INPUT LABELS
 const domainHeadline = computed(() => {
     return lang.value === "none" ?
     "I already have a domain" : lang.value === "eng" ?
@@ -587,7 +619,8 @@ const radioerrormsg = computed(() => {
     return lang.value === "none" ?
     "You need to choose an option for both points" : lang.value === "eng" ?
     "You need to choose an option for both points" : "Bitte wähle eine aus den obigen Optionen";
-})
+});
+// RESETS ALL ERRORS
 function resetErrors(): void {
     err_invalidUserdata.value = false;
     err_invalidUseremail.value = false;
@@ -596,6 +629,7 @@ function resetErrors(): void {
     err_connection.value = false;
     err_too_soon.value = false;
 }
+// SETS DOMAIN/WEBSITE INFORMATION
 function setDomainInfo(e: Event): void {
     const radio = e.target as HTMLInputElement;
     user_inputs.hasdomain = radio.value;
@@ -607,6 +641,47 @@ function setWebspaceInfo(e: Event): void {
 </script>
 
 <style scoped>
+.privacy-window h3 {
+    font-family: "Unbounded Bold 700";
+    color: var(--tert);
+}
+.privacy-window p {
+    font-family: "Ubuntu Med 500";
+    color: #c7c7c7;
+}
+.privacy-window a {
+    font-family: "Ubuntu Med 500";
+    color: var(--tert);
+}
+.privacy-window {
+    width: clamp(300px, 70vw, 700px);
+    padding: 100px 0;
+    border: 3px solid var(--prim-2);
+}
+.privacy-info-enter-from,
+.privacy-info-leave-to {
+    opacity: 0;
+    transform: scaleX(.4);
+}
+.privacy-info-enter-active {
+    transition: all .3s ease-in;
+}
+.privacy-info-leave-active {
+    transition: all .3s ease-out;
+}
+.privacy-info-enter-to,
+.privacy-info-leave-from {
+    opacity: 1;
+    transform: scaleX(1);
+}
+.privacy-backdrop {
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,.7);
+}
 .submit-loading {
     width: 30px;
     height: 30px;
@@ -915,11 +990,11 @@ input[type="radio"] {
 }
 .background-image {
     width: 100%;
+    height: 100vh;
     background-image:
     linear-gradient(rgba(21, 33, 69, .9), rgba(21, 33, 69, .9)),
     url("@/assets/img/textures/rect_texture.png");
     background-size: 15%;
-    padding-bottom: 100px;
 }
 .dynamic-form {
     width: 100%;
@@ -949,9 +1024,11 @@ input[type="radio"] {
     width: calc(100% - 3px);
     border-left: 3px solid black;
 }
+.message-wrapper  *:not(input)::selection{
+    all: unset;
+}
 .message-wrapper {
     height: 600px;
-    margin-top: 100px;
     border: 3px solid black;
     border-radius: 15px;
     overflow: hidden;
