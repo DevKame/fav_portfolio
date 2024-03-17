@@ -39,23 +39,21 @@
                             <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
                                 <label for="msgFirstname">{{ dataLabelFirstname }}</label>
                                 <input @input="showUserInputs" type="text" id="msgFirstname" name="msgFirstname" class="rounded-3 ps-2 py-1" v-model="user_inputs.firstname">
-                                <div class="error-holder mt-1 overflow-hidden border border-info">
-
-                                </div>
                             </div>
                             <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
                                 <label for="msgLastname">{{ dataLabelLastname }}</label>
                                 <input @input="showUserInputs" type="text" id="msgLastname" name="msgLastname" class="rounded-3 ps-2 py-1" v-model="user_inputs.lastname">
-                                <div class="error-holder mt-1 overflow-hidden border border-info">
-
-                                </div>
                             </div>
                             <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
-                                <label for="msgE-Mail">E-Mail</label>
-                                <input @input="showUserInputs" type="email" id="msEmail" name="msEmail" class="rounded-3 ps-2 py-1" v-model="user_inputs.email">
-                                <div class="error-holder mt-1 overflow-hidden border border-info">
+                                <label for="msgEmail">E-Mail</label>
+                                <input @input="showUserInputs" type="email" id="msgEmail" name="msgEmail" class="rounded-3 ps-2 py-1" v-model="user_inputs.email">
+                            </div>
+                            <div class="input-holder my-2 border border-danger d-flex justify-content-start align-items-center">
+                                <input @input="showUserInputs" type="checkbox" id="msgPrivacy" name="msgPrivacy" class="position-relative" ref="privacyCheckbox">
+                                <label for="msgPrivacy" class="ms-3">I have read and accept the <a href="#">privacy policy</a></label>
+                            </div>
+                            <div class="error-holder mt-1 overflow-hidden border border-info">
 
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -66,9 +64,51 @@
                             <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
                                 <span :class="{too_many_chars: tooManyChars}" class="char-counter">{{ totalChars }} / 512</span>
                                 <textarea  @input="showUserInputs" id="msgText" name="msgText" class="rounded-3 ps-2 py-1" v-model="user_inputs.message"></textarea>
-                                <div class="error-holder mt-1 overflow-hidden border border-info">
+                            </div>
+                            <div class="error-holder mt-1 overflow-hidden border border-info">
 
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div v-if="currentForm ==='WEBSITEINFO'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
+                        <h4 class="me-auto">{{ msgDesc }}</h4>
+                        <div class="border-wrapper d-flex flex-column justify-content-center align-items-center">
+                            <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
+                                <p>{{ domainHeadline }}</p>
+                                <div class="w-100 d-flex justify-content-around align-items-center">
+                                    <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
+                                        <input type="radio" name="domain" id="domainyes" value="yes">
+                                        <label class="radio-label" for="domainyes">{{ yes }}</label>
+                                    </div>
+                                    <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
+                                        <input type="radio" name="domain" id="domainno" value="no">
+                                        <label class="radio-label" for="domainno">{{ no }}</label>
+                                    </div>
+                                    <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
+                                        <input type="radio" name="domain" id="domainunsure" value="unsure">
+                                        <label class="radio-label" for="domainunsure">{{ unsure }}</label>
+                                    </div>
                                 </div>
+                            </div><div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
+                                <p>{{ webspaceHeadline }}</p>
+                                <div class="w-100 d-flex justify-content-around align-items-center">
+                                    <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
+                                        <input type="radio" name="webspace" id="webspaceyes" value="yes">
+                                        <label class="radio-label" for="webspaceyes">{{ yes }}</label>
+                                    </div>
+                                    <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
+                                        <input type="radio" name="webspace" id="webspaceno" value="no">
+                                        <label class="radio-label" for="webspaceno">{{ no }}</label>
+                                    </div>
+                                    <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
+                                        <input type="radio" name="webspace" id="webspaceunsure" value="unsure">
+                                        <label class="radio-label" for="webspaceunsure">{{ unsure }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="error-holder mt-1 overflow-hidden border border-info">
+
                             </div>
                         </div>
                     </div>
@@ -83,7 +123,7 @@
                             <div class="link-shadow position-absolute"></div>
                         </button>
                         <button v-if="showSubmit" @click="nextSubmit" class="prim-btn submit-btn ms-auto d-flex justify-content-center align-items-center position-relative overflow-hidden">
-                            {{ footerSubmitBtn }}
+                            <p class="m-0">{{ footerSubmitBtn }}</p>
                             <div class="link-shadow position-absolute"></div>
                         </button>
                     </div>
@@ -163,6 +203,11 @@ const msgDesc = computed(() => {
             "Enter your message here." : lang.value === "eng" ?
             "Enter your message here." : "Schreibe deine Nachricht hier.";
             break;
+        case "WEBSITEINFO":
+            result = lang.value === "none" ?
+            "Additional info regarding websites" : lang.value === "eng" ?
+            "Additional info regarding websites" : "Zusatzinfos bezüglich Websites";
+            break;
     }
     return result!;
 });
@@ -218,12 +263,6 @@ const footerSubmitBtn = computed(() => {
 // SETS THE REASON FOR MESSAGE AND CONTINUES TO DATA-WINDOW
 function setReason(val: string): void {
     showSubmit.value = true;
-    switch(val) {
-        case "website":
-            break;
-        case "general":
-            break;
-    }
     user_inputs.reason = val;
     console.clear();
     console.table(user_inputs);
@@ -275,6 +314,17 @@ function nextSubmit(): void {
     switch(currentForm.value) {
         case "DATA":
             currentForm.value = "MESSAGE";
+            if(user_inputs.reason === "general") {
+                readyToSubmit.value = true;
+            }
+            break;
+        case "MESSAGE":
+            console.clear();
+            console.table(user_inputs);
+            if(user_inputs.reason === "website") {
+                currentForm.value = "WEBSITEINFO";
+                readyToSubmit.value = true;
+            }
             break;
     }
 }
@@ -290,10 +340,109 @@ function showUserInputs(): void {
     console.clear();
     console.table(user_inputs);
 }
+const domainHeadline = computed(() => {
+    return lang.value === "none" ?
+    "I already have a domain" : lang.value === "eng" ?
+    "I already have a domain" : "Ich habe bereits eine Domain";
+});
+const webspaceHeadline = computed(() => {
+    return lang.value === "none" ?
+    "I already have a webspace" : lang.value === "eng" ?
+    "I already have a webspace" : "Ich habe bereits einen Webspace";
+});
+const yes = computed(() => {
+    return lang.value === "none" ?
+    "Yes" : lang.value === "eng" ?
+    "Yes" : "Ja";
+});
+const no = computed(() => {
+    return lang.value === "none" ?
+    "No" : lang.value === "eng" ?
+    "No" : "Nein";
+});
+const unsure = computed(() => {
+    return lang.value === "none" ?
+    "Unsure" : lang.value === "eng" ?
+    "Unsure" : "Unsicher";
+});
 
 </script>
 
 <style scoped>
+label[for="msgPrivacy"] a {
+    color: var(--tert);
+}
+label[for="msgPrivacy"] {
+    cursor: pointer;
+}
+input[type="radio"]:checked::before {
+    content: "";
+    position: absolute;
+    border: 1px solid black;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    background-color: var(--tert);
+    transition: all .3s ease;
+}
+input[type="radio"]:not(:checked)::before {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    transform: translate(-50%, -50%);
+    background-color: var(--tert);
+    transition: all .3s ease;
+}
+input[type="radio"] {
+    position: relative;
+    border-radius: 50%;
+    appearance: none;
+    width: 15px !important;
+    height: 15px !important;
+    border: 1px solid var(--tert);
+    cursor: pointer;
+    background-color: var(--prim-2);
+}
+#msgPrivacy:checked::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 70%;
+    height: 70%;
+    transform: translate(-50%, -50%);
+    background-color: green;
+    transition: all .3s ease;
+}
+#msgPrivacy:not(:checked)::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    transform: translate(-50%, -50%);
+    background-color: green;
+    transition: all .3s ease;
+}
+#msgPrivacy {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border: 1px solid var(--tert);
+    cursor: pointer;
+    background-color: var(--prim-2);
+}
+.char-counter {
+    font-size: 12px;
+}
 .error-holder {
     width: 100%;
     height: 40px;
@@ -305,12 +454,12 @@ function showUserInputs(): void {
     height: 250px;
     resize: none;
 }
-.input-holder input:focus,
-.input-holder textarea:focus {
+.input-holder input:not(input[type="checkbox"]):focus,
+.input-holder textarea:not(input[type="checkbox"]):focus {
     background-color: var(--prim-2);
 }
-.input-holder input,
-.input-holder textarea {
+.input-holder input:not(input[type="checkbox"]),
+.input-holder textarea:not(input[type="checkbox"]) {
     width: 100%;
     outline: none;
     border: 2px solid var(--tert);
@@ -318,7 +467,8 @@ function showUserInputs(): void {
     color: #c7c7c7;
     transition: background-color .3s ease;
 }
-.input-holder {
+.input-holder,
+.error-holder {
     width: 30%;
 }
 .form-footer button:not(.prim-btn):hover::after {
