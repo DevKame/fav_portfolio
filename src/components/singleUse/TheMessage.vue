@@ -5,21 +5,21 @@
                 <div class="message-wrapper p-3 container position-relative d-flex flex-column justify-content-start align-items-center">
                     <h1 class="me-auto position-relative">{{ msgTitle }}</h1>
                     <transition name="message-blocks" mode="out-in">
-                        <div v-if="currentForm ==='LANGUAGE'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
+                        <div v-if="currentForm ==='LANGUAGE'" class="dynamic-form position-relative  d-flex flex-column justify-content-start align-items-center">
                             <h4 class="me-auto">{{ msgDesc }}</h4>
-                            <div class="border-wrapper d-flex justify-content-center align-items-center">
-                                <button @click="setLanguage('eng')" class="prim-btn lang-btn me-4 position-relative">
+                            <div class="border-wrapper d-flex flex-column flex-md-row justify-content-center align-items-center">
+                                <button @click="setLanguage('eng')" class="prim-btn lang-btn mb-4 mb-md-0 me-md-4 position-relative">
                                     ENGLISH
                                     <div class="link-shadow position-absolute"></div>
                                 </button>
-                                <button @click="setLanguage('ger')" class="prim-btn lang-btn ms-4 position-relative">
+                                <button @click="setLanguage('ger')" class="prim-btn lang-btn mt-4 mt-md-0 ms-md-4 position-relative">
                                     DEUTSCH
                                     <div class="link-shadow position-absolute"></div>
                                 </button>
                             </div>
                         </div>
 
-                        <div v-else-if="currentForm ==='REASON'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
+                        <div v-else-if="currentForm ==='REASON'" class="dynamic-form position-relative d-flex flex-column justify-content-start align-items-center">
                             <h4 class="me-auto">{{ msgDesc }}</h4>
                             <div class="border-wrapper d-flex flex-column justify-content-center align-items-center">
                                 <button @click="setReason('website')" class="prim-btn type-btn my-3 position-relative">
@@ -33,26 +33,26 @@
                             </div>
                         </div>
 
-                        <div v-else-if="currentForm ==='DATA'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
+                        <div v-else-if="currentForm ==='DATA'" class="dynamic-form position-relative d-flex flex-column justify-content-start align-items-center">
                             <h4 class="me-auto">{{ msgDesc }}</h4>
                             <div class="border-wrapper d-flex flex-column justify-content-center align-items-center">
-                                <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
+                                <div class="input-holder my-2  d-flex flex-column justify-content-start align-items-start">
                                     <label for="msgFirstname">{{ dataLabelFirstname }}</label>
                                     <input type="text" id="msgFirstname" name="msgFirstname" class="rounded-3 ps-2 py-1" maxlength="15" v-model="user_inputs.firstname">
                                 </div>
-                                <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
+                                <div class="input-holder my-2  d-flex flex-column justify-content-start align-items-start">
                                     <label for="msgLastname">{{ dataLabelLastname }}</label>
                                     <input type="text" id="msgLastname" name="msgLastname" class="rounded-3 ps-2 py-1" maxlength="15" v-model="user_inputs.lastname">
                                 </div>
-                                <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
+                                <div class="input-holder my-2  d-flex flex-column justify-content-start align-items-start">
                                     <label for="msgEmail">{{ dataLabelEmail }}</label>
                                     <input type="email" id="msgEmail" name="msgEmail" class="rounded-3 ps-2 py-1" maxlength="30" v-model="user_inputs.email">
                                 </div>
-                                <div class="input-holder my-2 border border-danger d-flex justify-content-start align-items-center">
+                                <div class="input-holder my-2  d-flex justify-content-start align-items-center">
                                     <input @input="togglePrivacy" type="checkbox" id="msgPrivacy" name="msgPrivacy" class="position-relative" ref="privacyCheckbox">
                                     <label for="msgPrivacy" class="ms-3">I have read and accept the <a href="#">privacy policy</a></label>
                                 </div>
-                                <div class="error-holder mt-1 overflow-hidden d-flex justify-content-center align-items-center border border-info">
+                                <div class="error-holder mt-1 overflow-hidden d-flex justify-content-center align-items-center">
                                     <transition name="err" mode="out-in">
                                         <div v-if="err_invalidUserdata" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
                                             <p class="m-0">{{ userdataerrormsg }}</p>
@@ -74,14 +74,14 @@
                             </div>
                         </div>
                         
-                        <div v-else-if="currentForm ==='MESSAGE'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
+                        <div v-else-if="currentForm ==='MESSAGE'" class="dynamic-form position-relative d-flex flex-column justify-content-start align-items-center">
                             <h4 class="me-auto">{{ msgDesc }}</h4>
                             <div class="border-wrapper d-flex flex-column justify-content-center align-items-center">
-                                <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
+                                <div class="input-holder my-2  d-flex flex-column justify-content-start align-items-start">
                                     <span :class="{too_many_chars: tooManyChars}" class="char-counter">{{ totalChars }} / 512</span>
                                     <textarea id="msgText" name="msgText" class="rounded-3 ps-2 py-1" v-model="user_inputs.message"></textarea>
                                 </div>
-                                <div class="error-holder mt-1 overflow-hidden border border-info">
+                                <div class="error-holder mt-1 overflow-hidden">
                                     <transition name="err" mode="out-in">
                                         <div v-if="err_invalidUsertext" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
                                             <p class="m-0">{{ usertexterrormsg }}</p>
@@ -94,10 +94,10 @@
                             </div>
                         </div>
                         
-                        <div v-else-if="currentForm ==='WEBSITEINFO'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
+                        <div v-else-if="currentForm ==='WEBSITEINFO'" class="dynamic-form position-relative d-flex flex-column justify-content-start align-items-center">
                             <h4 class="me-auto">{{ msgDesc }}</h4>
                             <div class="border-wrapper d-flex flex-column justify-content-center align-items-center">
-                                <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
+                                <div class="input-holder my-2  d-flex flex-column justify-content-start align-items-start">
                                     <p>{{ domainHeadline }}</p>
                                     <div class="w-100 d-flex justify-content-around align-items-center">
                                         <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
@@ -114,7 +114,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
+                                <div class="input-holder my-2  d-flex flex-column justify-content-start align-items-start">
                                     <p>{{ webspaceHeadline }}</p>
                                     <div class="w-100 d-flex justify-content-around align-items-center">
                                         <div class="radio-holder d-flex flex-column justify-content-between align-items-center">
@@ -131,7 +131,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="error-holder mt-1 overflow-hidden border border-info">
+                                <div class="error-holder mt-1 overflow-hidden">
                                     <transition name="err" mode="out-in">
                                         <div v-if="err_radios" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
                                             <p class="m-0">{{ radioerrormsg }}</p>
@@ -144,7 +144,7 @@
                             </div>
                         </div>
                         
-                        <div v-else-if="currentForm ==='FINISHED'" class="dynamic-form position-relative border border-info d-flex flex-column justify-content-start align-items-center">
+                        <div v-else-if="currentForm ==='FINISHED'" class="dynamic-form position-relative d-flex flex-column justify-content-start align-items-center">
                             <h4 class="me-auto">{{ msgDesc }}</h4>
                             <p class="my-auto">{{ messageDone }}</p>
                         </div>
@@ -162,7 +162,8 @@
                             </button>
                             <transition name="sbtn">
                                 <button v-if="showSubmit" @click="nextSubmit" class="prim-btn submit-btn ms-auto d-flex justify-content-center align-items-center position-relative overflow-hidden">
-                                    <p class="m-0">{{ footerSubmitBtn }}</p>
+                                    <div v-if="submitLoading" class="submit-loading rounded-circle"></div>
+                                    <p v-else class="m-0">{{ footerSubmitBtn }}</p>
                                     <div class="link-shadow position-absolute"></div>
                                 </button>
                             </transition>
@@ -188,6 +189,7 @@ interface Userinputs {
     privacy: boolean;
 }
 
+const submitLoading = ref(false);
 const user_inputs = reactive<Userinputs>({
     // "ger" | "eng"
     lang: "",
@@ -205,8 +207,8 @@ const user_inputs = reactive<Userinputs>({
 });
 // HANDLES WHAT HAPPENS ON CLICKING "NEXT"/"SUBMIT" DEPENDING ON currentForm
 async function nextSubmit() {
-    //TODO: Zwischen den einzelnen Steps muss Validierung hin
     resetErrors();
+    submitLoading.value = true;
     switch(currentForm.value) {
         case "DATA": {
             try {
@@ -270,7 +272,6 @@ async function nextSubmit() {
                         finishMessage();
                         currentForm.value = "FINISHED";
                         showFooter.value = false;
-                        showSubmit.value = false;
                         readyToSubmit.value = false;
                     }
                 }
@@ -293,7 +294,6 @@ async function nextSubmit() {
                 else {
                     currentForm.value = "FINISHED";
                     showFooter.value = false;
-                    showSubmit.value = false;
                     readyToSubmit.value = false;
                 }
             }
@@ -302,6 +302,7 @@ async function nextSubmit() {
             }
             break;
     }
+    submitLoading.value = false;
 }
 function togglePrivacy(): void {
     user_inputs.privacy = !user_inputs.privacy;
@@ -320,12 +321,33 @@ async function finishMessage() {
     }
 }
 
+const showSubmit = computed(() => {
+    let result: boolean;
+    switch(currentForm.value) {
+        case "DATA":
+            result =
+            user_inputs.firstname !== "" &&
+            user_inputs.lastname !== "" &&
+            user_inputs.email !== "" &&
+            user_inputs.privacy;
+            break;
+        case "MESSAGE":
+            result =
+            user_inputs.message !== "";
+            break;
+        case "WEBSITEINFO":
+            result =
+            user_inputs.hasdomain !== "" &&
+            user_inputs.haswebspace !== "";
+            break;
+    }
+    return result!;
+});
+
 // SHOWS "SUBMIT" ONLY AT THE END OF THE FORM, OTHERWISE SHOWS "NEXT"
 const readyToSubmit = ref(false);
 // POINTS TO WETHER TO SHOW FOOTER OR NOT
 const showFooter = ref(false);
-// POINT WETHER TO SHOW SUBMIT BUTTON OR NOT
-const showSubmit = ref(false);
 // CHOSEN LANGUAGE
 const lang = ref<string>("none");
 // POINTS OUT WHAT FORM TO SHOW CURRENTLY
@@ -422,14 +444,12 @@ const footerSubmitBtn = computed(() => {
 });
 // SETS THE REASON FOR MESSAGE AND CONTINUES TO DATA-WINDOW
 function setReason(val: string): void {
-    showSubmit.value = true;
     user_inputs.reason = val;
     currentForm.value = "DATA";
 }
 // RESETS FORM FOR MESSAGING, JUST LEAVES LANGUAGE SETTING AS CHOSEN
 function resetMessage(): void {
     showFooter.value = false;
-    showSubmit.value = false;
     readyToSubmit.value = false;
     currentForm.value = "LANGUAGE";
     user_inputs.lang = "";
@@ -449,12 +469,10 @@ function messageBack(): void {
         case "REASON":
             currentForm.value = "LANGUAGE";
             showFooter.value = false;
-            showSubmit.value = false;
             user_inputs.reason = "";
             break;
         case "DATA":
             currentForm.value = "REASON";
-            showSubmit.value = false;
             user_inputs.firstname = "";
             user_inputs.lastname = "";
             user_inputs.email = "";
@@ -576,6 +594,7 @@ function resetErrors(): void {
     err_privacy.value = false;
     err_invalidUsertext.value = false;
     err_connection.value = false;
+    err_too_soon.value = false;
 }
 function setDomainInfo(e: Event): void {
     const radio = e.target as HTMLInputElement;
@@ -588,6 +607,22 @@ function setWebspaceInfo(e: Event): void {
 </script>
 
 <style scoped>
+.submit-loading {
+    width: 30px;
+    height: 30px;
+    clip-path: polygon(0% 0%, 50% 50%, 70% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%);
+    animation: rotate-loader 1s linear infinite;
+    border: 3px solid #c7c7c7;
+    border-radius: 50%;
+}
+@keyframes rotate-loader {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
 .footer-enter-active {
     animation: footer-move .7s linear 1 forwards;
 }
@@ -595,10 +630,10 @@ function setWebspaceInfo(e: Event): void {
     animation: footer-move .7s linear 1 reverse forwards;
 }
 .sbtn-enter-active {
-    animation: sbtn-move .5s linear 1 forwards;
+    animation: sbtn-move .65s linear 1 forwards;
 }
 .sbtn-leave-active {
-    animation: sbtn-move .5s linear 1 reverse forwards;
+    animation: sbtn-move .65s linear 1 reverse forwards;
 }
 @keyframes footer-move {
     0% {
@@ -768,7 +803,7 @@ input[type="radio"] {
 }
 .input-holder,
 .error-holder {
-    width: 30%;
+    width: 100%;
 }
 .form-footer button:not(.prim-btn):hover::after {
     width: 50%;
@@ -800,8 +835,9 @@ input[type="radio"] {
     color: black;
 }
 .form-footer button {
-    width: 150px;
-    height: 60px;
+    width: 80px;
+    height: 40px;
+    font-size: 12px;
     transition: all .3s ease;
 }
 .form-footer button:not(.prim-btn) {
@@ -813,7 +849,7 @@ input[type="radio"] {
 .form-footer {
     z-index: 1;
     width: 100%;
-    height: 150px;
+    height: 60px;
 }
 .link-shadow {
     top: 0;
@@ -870,7 +906,7 @@ input[type="radio"] {
     z-index: 1;
 }
 .type-btn {
-    width: 300px;
+    width: 250px;
     height: 100px;
 }
 .lang-btn {
@@ -918,10 +954,50 @@ input[type="radio"] {
     margin-top: 100px;
     border: 3px solid black;
     border-radius: 15px;
+    overflow: hidden;
 }
 .message-wrapper h1 {
     color: #c7c7c7;
     font-family: "Unbounded Bold 700";
     z-index: 1;
+}
+@media screen and (min-width: 576px) {
+    .input-holder,
+    .error-holder {
+        width: 70%;
+    }
+    .form-footer button {
+        width: 100px;
+        height: 50px;
+        font-size: 14px;
+    }
+    .form-footer {
+        height: 100px;
+    }
+}
+@media screen and (min-width: 768px) {
+    .input-holder,
+    .error-holder {
+        width: 50%;
+    }
+    .form-footer {
+        height: 150px;
+    }
+    .form-footer button {
+        width: 150px;
+        height: 60px;
+        font-size: 16px;
+    }
+}
+@media screen and (min-width: 992px) {
+    
+}
+@media screen and (min-width: 1200px) {
+    .input-holder,
+    .error-holder {
+        width: 30%;
+    }
+}
+@media screen and (min-width: 1400px) {
 }
 </style>
