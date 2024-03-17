@@ -38,22 +38,32 @@
                         <div class="border-wrapper d-flex flex-column justify-content-center align-items-center">
                             <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
                                 <label for="msgFirstname">{{ dataLabelFirstname }}</label>
-                                <input @input="showUserInputs" type="text" id="msgFirstname" name="msgFirstname" class="rounded-3 ps-2 py-1" v-model="user_inputs.firstname">
+                                <input @input="showUserInputs" type="text" id="msgFirstname" name="msgFirstname" class="rounded-3 ps-2 py-1" maxlength="15" v-model="user_inputs.firstname">
                             </div>
                             <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
                                 <label for="msgLastname">{{ dataLabelLastname }}</label>
-                                <input @input="showUserInputs" type="text" id="msgLastname" name="msgLastname" class="rounded-3 ps-2 py-1" v-model="user_inputs.lastname">
+                                <input @input="showUserInputs" type="text" id="msgLastname" name="msgLastname" class="rounded-3 ps-2 py-1" maxlength="15" v-model="user_inputs.lastname">
                             </div>
                             <div class="input-holder my-2 border border-danger d-flex flex-column justify-content-start align-items-start">
-                                <label for="msgEmail">E-Mail</label>
-                                <input @input="showUserInputs" type="email" id="msgEmail" name="msgEmail" class="rounded-3 ps-2 py-1" v-model="user_inputs.email">
+                                <label for="msgEmail">{{ dataLabelEmail }}</label>
+                                <input @input="showUserInputs" type="email" id="msgEmail" name="msgEmail" class="rounded-3 ps-2 py-1" maxlength="30" v-model="user_inputs.email">
                             </div>
                             <div class="input-holder my-2 border border-danger d-flex justify-content-start align-items-center">
-                                <input @input="showUserInputs" type="checkbox" id="msgPrivacy" name="msgPrivacy" class="position-relative" ref="privacyCheckbox">
+                                <input @input="togglePrivacy" type="checkbox" id="msgPrivacy" name="msgPrivacy" class="position-relative" ref="privacyCheckbox">
                                 <label for="msgPrivacy" class="ms-3">I have read and accept the <a href="#">privacy policy</a></label>
                             </div>
-                            <div class="error-holder mt-1 overflow-hidden border border-info">
-
+                            <div class="error-holder mt-1 overflow-hidden d-flex justify-content-center align-items-center border border-info">
+                                <transition name="err" mode="out-in">
+                                    <div v-if="err_invalidUserdata" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
+                                        <p class="m-0">{{ userdataerrormsg }}</p>
+                                    </div>
+                                    <div v-else-if="err_invalidUseremail" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
+                                        <p class="m-0">{{ useremailerrormsg }}</p>
+                                    </div>
+                                    <div v-else-if="err_privacy" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
+                                        <p class="m-0">{{ privacyerrormsg }}</p>
+                                    </div>
+                                </transition>
                             </div>
                         </div>
                     </div>
@@ -66,7 +76,11 @@
                                 <textarea  @input="showUserInputs" id="msgText" name="msgText" class="rounded-3 ps-2 py-1" v-model="user_inputs.message"></textarea>
                             </div>
                             <div class="error-holder mt-1 overflow-hidden border border-info">
-
+                                <transition name="err" mode="out-in">
+                                    <div v-if="err_invalidUsertext" class="error rounded-2 d-flex justify-content-center align-items-center w-100">
+                                        <p class="m-0">{{ usertexterrormsg }}</p>
+                                    </div>
+                                </transition>
                             </div>
                         </div>
                     </div>
@@ -162,6 +176,60 @@ const user_inputs = reactive<Userinputs>({
     haswebspace: "",
     privacy: false,
 });
+// HANDLES WHAT HAPPENS ON CLICKING "NEXT"/"SUBMIT" DEPENDING ON currentForm
+async function nextSubmit() {
+    //TODO: Zwischen den einzelnen Steps muss Validierung hin
+    resetErrors();
+    switch(currentForm.value) {
+        case "DATA": {
+            const response = await fetch("http://localhost/Eskamedin/fav_portfolio/vue_app/public/backend/server.php", {
+                method: "post",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({task: "validate-data", firstname: user_inputs.firstname, lastname: user_inputs.lastname, email: user_inputs.email}),
+            });
+            const data = await response.json();
+            console.log(data);
+            if(!data.success) {
+                switch(data.reason) {
+                    case "too-long":
+                        err_invalidUserdata.value = true;
+                        break;
+                    case "invalid-entries":
+                        err_invalidUserdata.value = true;
+                        break;
+                    case "invalid-email":
+                        err_invalidUseremail.value = true;
+                        break;
+                }
+            }
+            else {
+                if(!user_inputs.privacy) {
+                    err_privacy.value = true;
+                }
+                else {
+                    resetErrors();
+                    currentForm.value = "MESSAGE";
+                    if(user_inputs.reason === "general") {
+                        readyToSubmit.value = true;
+                    }
+                }
+            }
+            break;
+        }
+        case "MESSAGE":
+            console.clear();
+            console.table(user_inputs);
+            if(user_inputs.reason === "website") {
+                currentForm.value = "WEBSITEINFO";
+                readyToSubmit.value = true;
+            }
+            break;
+    }
+}
+function togglePrivacy(): void {
+    user_inputs.privacy = !user_inputs.privacy;
+    showUserInputs();
+}
 
 // SHOWS "SUBMIT" ONLY AT THE END OF THE FORM, OTHERWISE SHOWS "NEXT"
 const readyToSubmit = ref(false);
@@ -276,6 +344,7 @@ function resetMessage(): void {
 }
 // CALLBACK FOR CLICKING "BACK" IN MESSAGE FORM
 function messageBack(): void {
+    resetErrors();
     switch(currentForm.value) {
         case "REASON":
             currentForm.value = "LANGUAGE";
@@ -289,10 +358,12 @@ function messageBack(): void {
             user_inputs.firstname = "";
             user_inputs.lastname = "";
             user_inputs.email = "";
+            user_inputs.privacy = false;
             break;
         case "MESSAGE":
             currentForm.value = "DATA";
             user_inputs.message = "";
+            user_inputs.privacy = false;
             break;
     }
     showUserInputs();
@@ -300,34 +371,19 @@ function messageBack(): void {
 // ENG/GER EXPRESSIONS FOR USER DATA INPUT LABELS
 const dataLabelFirstname = computed(() => {
     return lang.value === "none" ?
-    "Firstname" : lang.value === "eng" ?
-    "Firstname" : "Vorname";
+    "Firstname (15 characters)" : lang.value === "eng" ?
+    "Firstname (15 characters)" : "Vorname (15 Zeichen)";
 });
 const dataLabelLastname = computed(() => {
     return lang.value === "none" ?
-    "Lastname" : lang.value === "eng" ?
-    "Lastname" : "Nachname";
+    "Lastname (15 characters)" : lang.value === "eng" ?
+    "Lastname (15 characters)" : "Nachname (15 Zeichen)";
 });
-// HANDLES WHAT HAPPENS ON CLICKING "NEXT"/"SUBMIT" DEPENDING ON currentForm
-function nextSubmit(): void {
-    //TODO: Zwischen den einzelnen Steps muss Validierung hin
-    switch(currentForm.value) {
-        case "DATA":
-            currentForm.value = "MESSAGE";
-            if(user_inputs.reason === "general") {
-                readyToSubmit.value = true;
-            }
-            break;
-        case "MESSAGE":
-            console.clear();
-            console.table(user_inputs);
-            if(user_inputs.reason === "website") {
-                currentForm.value = "WEBSITEINFO";
-                readyToSubmit.value = true;
-            }
-            break;
-    }
-}
+const dataLabelEmail = computed(() => {
+    return lang.value === "none" ?
+    "Email (30 characters)" : lang.value === "eng" ?
+    "Email (30 characters)" : "Email (30 Zeichen)";
+});
 // COUNTS THE AMOUNT OF CHARACTERS IN <textarea>
 const totalChars = computed(() => {
     return user_inputs.message.length;
@@ -365,10 +421,62 @@ const unsure = computed(() => {
     "Unsure" : lang.value === "eng" ?
     "Unsure" : "Unsicher";
 });
-
+// ERRORS:
+const userdataerrormsg = computed(() => {
+    return lang.value === "none" ?
+    "Enter non-empty values below shown characters" : lang.value === "eng" ?
+    "Enter non-empty values below shown characters" : "Trage bitte nicht-leere Werte unter angegebener Länge ein";
+});
+const err_invalidUserdata = ref(false);
+const useremailerrormsg = computed(() => {
+    return lang.value === "none" ?
+    "Enter a valid email adress" : lang.value === "eng" ?
+    "Enter a valid email adress" : "Trage bitte eine valide Emailadresse ein";
+});
+const err_invalidUseremail = ref(false);
+const privacyerrormsg = computed(() => {
+    return lang.value === "none" ?
+    "You need to accept the privacy terms" : lang.value === "eng" ?
+    "You need to accept the privacy terms" : "Du musst den Datenschutzbestimmungen zustimmen";
+});
+const err_privacy = ref(false);
+const err_invalidUsertext = ref(false);
+const usertexterrormsg = computed(() => {
+    return lang.value === "none" ?
+    "Enter non-empty values below 512 characters" : lang.value === "eng" ?
+    "Enter non-empty values below 512 characters" : "Trage bitte Text ein, kürzer als 512 Zeichen";
+});
+function resetErrors(): void {
+    err_invalidUserdata.value = false;
+    err_invalidUseremail.value = false;
+    err_privacy.value = false;
+    err_invalidUsertext.value = false;
+}
 </script>
 
 <style scoped>
+.err-enter-from,
+.err-leave-to {
+    transform: translate(0, 50%) scale(.8);
+    opacity: 0;
+}
+.err-enter-active,
+.err-leave-active {
+    transition: all .3s ease;
+}
+.err-enter-to,
+.err-leave-from {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+}
+.error {
+    border: 2px solid var(--red);
+    background-color: var(--red-weak);
+}
+.error p {
+    color: black;
+    font-size: 12px;
+}
 label[for="msgPrivacy"] a {
     color: var(--tert);
 }
@@ -624,7 +732,5 @@ input[type="radio"] {
     color: #c7c7c7;
     font-family: "Unbounded Bold 700";
     z-index: 1;
-}
-.message {
 }
 </style>
